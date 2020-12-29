@@ -1,23 +1,7 @@
-import { 
-  INCREMENT,
-  DECREMENT,
-  RESET
-} from '../../constants/ActionTypes';
+import { INCREMENT, DECREMENT, RESET } from '../../constants/ActionTypes';
 
-export function increment () {
-  return {
-    type: INCREMENT
-  };
-}
+export const increment = () => ({ type: INCREMENT });
 
-export function decrement () {
-  return {
-    type: DECREMENT
-  };
-}
+export const decrement = () => ({ type: DECREMENT });
 
-export function reset () {
-  return {
-    type: RESET
-  };
-}
+export const reset = () => ({ type: RESET });
