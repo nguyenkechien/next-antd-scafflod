@@ -5,7 +5,7 @@ import * as cookie from 'cookie';
  * @param {String} key name of the cookie
  * @param {any} value value of the cookie
  * @param {Number} duration duration of the cookie (in days), cookie will be expired after this duration
- * @param {*} ctx get from next's getServerSideProps or getInitialProps : Context
+ * @param {NextPageContext} ctx get from next's getServerSideProps or getInitialProps : Context
  */
 export const setCookies = (key, value, duration, ctx) => {
   if (ctx && ctx.req && ctx.res) {
@@ -78,7 +78,7 @@ export const getCookiesFromServer = (key, req) => {
 /**
  *
  * @param {String} key cookie's key
- * @param {*} ctx get from next's getServerSideProps or getInitialProps : Context
+ * @param {NextPageContext} ctx get from next's getServerSideProps or getInitialProps : Context
  */
 export const deleteCookies = (key, ctx) => {
   setCookies(key, '', -1, ctx);

@@ -4,21 +4,23 @@ import { Provider } from 'react-redux';
 import withRedux from 'next-redux-wrapper';
 import withReduxSaga from 'next-redux-saga';
 import createStore from '../redux/store';
-import Layout from '../components/Layout';
-import { RouterTitle } from '../constants/ConstTypes';
+import Layout from '../layout';
+import { PRIVATE, RouterType } from '../constants/ConstTypes';
 import '../assets/self-styles.less';
 import NProgress from 'nprogress';
 import { createGlobalStyle } from 'styled-components';
-import { color_primary } from '../constants/CustomTheme';
+import { color_nprogress } from '../constants/CustomTheme';
 import Router from 'next/router';
 import { Auth } from '../core/util';
+import logger from '../core/Logger';
+
 const GlobalStyle = createGlobalStyle`
   #nprogress {
     pointer-events: none;
   }
 
   #nprogress .bar {
-    background: ${color_primary};
+    background: ${color_nprogress};
     position: fixed;
     z-index: 999999999999;
     top: 0;
@@ -29,43 +31,25 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 class NextApp extends App {
-  static redirectToLogin(ctx) {
-    const { req, res } = ctx;
-    if (req) {
-      res.writeHead(302, {
-        Location: `/login?next=${req.url}`, // => to /login page
-      });
-      res.end();
-      return;
-    }
-    Router.push(`/login?next=`);
-    return;
-  }
   static async getInitialProps({ Component, ctx, router }) {
-    let pageProps = {
-      publicRoute: true,
-    };
+    let pageProps = {};
 
-    const token = await Auth.getAuthTokenOnServer(ctx);
-    console.log(`token`, token);
     const route = (router && router.route) || '';
-    console.log('router: ', router, '\nroute:', route);
+    const routerType = RouterType[route] && RouterType[route].type;
+    logger.log('\nroute: ', route, '\nroute type: ', routerType, '\n', router);
+    if (routerType === PRIVATE && ctx.req) Auth.authOnServer(ctx);
 
-    const isAuthenticated = token && token.length > 0;
     if (Component.getInitialProps) {
       const initProps = await Component.getInitialProps({ ctx });
       pageProps = { ...pageProps, ...initProps };
     }
-    console.log(pageProps);
-    console.log(`pageProps`, pageProps);
 
-    return { pageProps, isAuthenticated };
+    logger.log(`pageProps`, pageProps);
+    return { pageProps };
   }
 
   componentDidMount() {
-    NProgress.configure({
-      showSpinner: false,
-    });
+    NProgress.configure({ showSpinner: false });
     Router.events.on('routeChangeStart', () => NProgress.start());
     Router.events.on('routeChangeComplete', () => NProgress.done());
     Router.events.on('routeChangeError', () => NProgress.done());
@@ -78,7 +62,14 @@ class NextApp extends App {
   }
 
   render() {
-    const { Component, pageProps, store, router } = this.props;
+    const {
+      Component,
+      pageProps,
+      store,
+      router,
+      router: { pathname },
+    } = this.props;
+    const { title, type } = RouterType[pathname] || {};
     return (
       <>
         <Head>
@@ -90,25 +81,12 @@ class NextApp extends App {
             href="/static/favicon.ico"
             type="image/ico"
           />
-          <style jsx global>
-            {`
-              * {
-                margin: 0;
-                padding: 0;
-              }
-              body {
-                font-family: Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei',
-                  Arial, sans-serif;
-                position: relative;
-              }
-            `}
-          </style>
         </Head>
         <Container>
           <Provider store={store}>
-            <Layout title={RouterTitle[router.pathname]}>
-              <GlobalStyle />
+            <Layout type={type} title={title} {...router}>
               <Component {...pageProps} router={router} />
+              <GlobalStyle />
             </Layout>
           </Provider>
         </Container>

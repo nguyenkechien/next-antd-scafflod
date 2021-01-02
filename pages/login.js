@@ -1,9 +1,8 @@
-// import UserDetail from '../../components/User/UserDetail';
-import UserLogin from '../components/User/UserLogin';
+import UserLogin from '../containers/user/login';
 
 UserLogin.getInitialProps = async props => {
   const { isServer } = props.ctx;
-  return { isServer, publicRoute: true };
+  return { isServer };
 };
 
 export default UserLogin;

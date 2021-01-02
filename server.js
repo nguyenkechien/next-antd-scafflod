@@ -24,7 +24,7 @@ app.prepare().then(() => {
     return app.render(req, res, '/user/detail', { username });
   });
 
-  server.use('/', routes);
+  server.use(routes);
 
   server.get('*', (req, res) => {
     return handle(req, res);

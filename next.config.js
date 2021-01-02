@@ -48,7 +48,6 @@ module.exports = withLess({
   },
   webpack: (config, { buildId, dev, isServer, defaultLoaders }) => {
     if (!dev) {
-      // config.node = { child_process: 'empty' };
       config.plugins.push(
         ...[
           new BundleAnalyzerPlugin({
@@ -98,7 +97,6 @@ module.exports = withLess({
       });
       config.devtool = 'cheap-module-inline-source-map';
     }
-    console.log(config);
     return config;
   },
   webpackDevMiddleware: config => {

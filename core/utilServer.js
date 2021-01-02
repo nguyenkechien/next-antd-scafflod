@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 const resType = {
   status: Number,
   message: Number,
@@ -17,4 +16,4 @@ const resJson = ({
   result = null,
 }) => ({ code: status, message, errors, result });
 
-module.exports = { resJson };
+module.exports = { resJson, resType };

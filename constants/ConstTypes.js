@@ -3,10 +3,27 @@ export const RoleType = {
   10: 'User',
 };
 
-export const RouterTitle = {
-  '/': 'Home',
-  '/user/list': 'UserList',
-  '/user/detail': 'UserDetail',
+export const PUBLIC = 'PUBLIC',
+  PRIVATE = 'PRIVATE',
+  SHARE = 'SHARE';
+
+export const RouterType = {
+  '/': {
+    title: 'Home',
+    type: SHARE,
+  },
+  '/user/list': {
+    title: 'User List',
+    type: PRIVATE,
+  },
+  '/user/detail': {
+    title: 'User Detail',
+    type: PRIVATE,
+  },
+  '/login': {
+    title: 'Login',
+    type: PUBLIC,
+  },
 };
 
 export const CookieKey = {
