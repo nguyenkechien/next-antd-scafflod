@@ -4,8 +4,9 @@ import {
   fetchUserListDataFail,
   fetchUserListDataSuccess,
 } from '../../actions/user';
-import api from '../../../constants/ApiUrlForBE';
+import Endpoint from '../../../constants/ApiUrlForBE';
 import nextFetch from '../../../core/nextFetch';
+import logger from '../../../core/Logger';
 
 /**
  * userList saga
@@ -14,10 +15,10 @@ export function* fetchUserList() {
   while (true) {
     yield take(FETCH_USER_LIST);
     try {
-      const res = yield nextFetch.get(api.getUserList);
+      const res = yield nextFetch.get(Endpoint.User.getUserList);
       yield put(fetchUserListDataSuccess(res.result));
     } catch (e) {
-      console.log(e);
+      logger.log(e);
       yield put(fetchUserListDataFail());
     }
   }

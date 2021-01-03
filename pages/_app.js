@@ -37,7 +37,8 @@ class NextApp extends App {
     const route = (router && router.route) || '';
     const routerType = RouterType[route] && RouterType[route].type;
     logger.log('\nroute: ', route, '\nroute type: ', routerType, '\n', router);
-    if (routerType === PRIVATE && ctx.req) Auth.authOnServer(ctx);
+
+    if ([PRIVATE].includes(routerType) && ctx.req) Auth.authOnServer(ctx);
 
     if (Component.getInitialProps) {
       const initProps = await Component.getInitialProps({ ctx });

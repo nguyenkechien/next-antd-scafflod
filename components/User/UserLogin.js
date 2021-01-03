@@ -7,11 +7,19 @@ const layout = {
 const tailLayout = {
   wrapperCol: { offset: 8, span: 16 },
 };
+export const propsType = {
+  router: PropTypes.object.isRequired,
+  userLogin: PropTypes.func.isRequired,
+};
+/**
+ *
+ * @param {propsType} props
+ */
 const UserLogin = props => {
-  console.log(props);
-  const onFinish = values => {
-    console.log('Success:', values);
-  };
+  // console.log(props);
+  // const onFinish = values => {
+  //   console.log('Success:', values);
+  // };
 
   const onFinishFailed = errorInfo => {
     console.log('Failed:', errorInfo);
@@ -24,7 +32,7 @@ const UserLogin = props => {
       initialValues={{
         remember: true,
       }}
-      onFinish={onFinish}
+      onFinish={props.userLogin}
       onFinishFailed={onFinishFailed}
     >
       <Form.Item
@@ -68,6 +76,4 @@ const UserLogin = props => {
 
 export default UserLogin;
 
-UserLogin.propTypes = {
-  router: PropTypes.object.isRequired,
-};
+UserLogin.propTypes = propsType;

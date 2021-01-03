@@ -1,5 +1,5 @@
 const { resJson } = require('../../core/utilServer');
-
+const findKey = require('lodash/findKey');
 const users = [
   {
     id: 1,
@@ -233,10 +233,51 @@ const users = [
   },
 ];
 
+const RoleType = {
+  1: {
+    username: 'admin',
+    password: 'admin',
+  },
+  10: {
+    username: 'user',
+    password: 'user',
+  },
+};
+
 class User {
   constructor() {}
   static GetUsers(req, res) {
     return res.json(resJson({ result: users }));
+  }
+  static SignIn(req, res) {
+    if (!req.body) {
+      return res.json(
+        resJson({
+          errors: {
+            username: 'username is required',
+            password: 'password is required',
+          },
+          status: 400,
+          message: 'Bad Request',
+        }),
+      );
+    }
+    const username = req.body.username,
+      password = req.body.password;
+    const userRole = findKey(RoleType, { username, password });
+    if (!userRole) {
+      return res.json(resJson({ status: 404, message: `Can't find account` }));
+    }
+    return res.json(
+      resJson({
+        status: 200,
+        message: `Login Success`,
+        result: {
+          token: 'my-token',
+          position: userRole,
+        },
+      }),
+    );
   }
 }
 

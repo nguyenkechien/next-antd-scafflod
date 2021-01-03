@@ -1,30 +1,22 @@
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Auth } from '../core/util';
 import ErrorPage from '../components/Error/ErrorPage';
 import logger from '../core/Logger';
 
 const Public = ({ title, children, ...props }) => {
+  const [isAuth, setAuth] = useState(Auth.isAuthenticated);
   useEffect(() => {
     logger.log(`layout-props`, props);
+    const { isAuthenticated } = Auth.authOnClient();
+    if (!isAuth && isAuthenticated) setAuth(isAuthenticated);
   }, []);
   return (
     <>
-      <style jsx>{`
-        .content-container {
-          position: relative;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          margin: 70px 20px 20px 20px;
-          padding: 10px 20px;
-          background-color: #fff;
-        }
-      `}</style>
       <Header title={title} />
       <div className="content-container">
-        {Auth.isAuthenticated ? <ErrorPage statusCode={403} /> : children}
+        {isAuth ? <ErrorPage statusCode={403} /> : children}
       </div>
     </>
   );

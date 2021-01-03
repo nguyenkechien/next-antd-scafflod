@@ -77,15 +77,15 @@ HTTP_METHOD.forEach(method => {
 
     return new Promise((resolve, reject) => resolve(fetch(url, opts)))
       .then(res => res.json())
-      .then(({ status = 200, message, errors, ...res }) => {
-        if (status >= 400 && message && errors === null) {
+      .then(({ code = 200, message, errors, ...res }) => {
+        if (code >= 400 && message && errors === null) {
           const err = new Error(message);
           err.message = message;
           err.code = status;
           err.data = data;
           throw err;
         }
-        return { ...res };
+        return res;
       });
   };
 });

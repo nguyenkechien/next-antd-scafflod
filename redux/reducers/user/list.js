@@ -1,11 +1,11 @@
 import {
   FETCH_USER_LIST,
   FETCH_USER_LIST_FAIL,
-  FETCH_USER_LIST_SUCCESS
+  FETCH_USER_LIST_SUCCESS,
 } from '../../../constants/ActionTypes';
 
 const initialState = {
-  list: []
+  list: [],
 };
 
 const list = (state = initialState, { type, payload }) => {
@@ -16,8 +16,8 @@ const list = (state = initialState, { type, payload }) => {
     case FETCH_USER_LIST_SUCCESS:
       return {
         ...state,
-        list: payload
-      };  
+        list: payload,
+      };
     default:
       return state;
   }

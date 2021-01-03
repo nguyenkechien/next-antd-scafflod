@@ -5,9 +5,16 @@ const {
 } = getConfig();
 
 export default {
-  /**
-   * Get user list
-   * @method GET
-   */
-  getUserList: `${API_SERVER}/users`,
+  User: {
+    /**
+     * Get user list
+     * @method GET
+     */
+    getUserList: `${API_SERVER}/users`,
+    /**
+     * Get user list
+     * @method POST
+     */
+    login: `${API_SERVER}/users/login`,
+  },
 };

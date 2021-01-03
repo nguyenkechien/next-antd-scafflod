@@ -1,4 +1,6 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+
 const cp = require('child_process');
 const path = require('path');
 const next = require('next');
@@ -15,6 +17,13 @@ const routes = require('./backend/routers');
 app.prepare().then(() => {
   const server = express();
   // deal /favicon.ico
+  server.use(
+    bodyParser.urlencoded({
+      extended: true,
+    }),
+  );
+  server.use(bodyParser.json());
+
   server.get('/favicon.ico', (req, res) =>
     res.sendFile(path.join(__dirname, 'static', 'favicon.ico')),
   );

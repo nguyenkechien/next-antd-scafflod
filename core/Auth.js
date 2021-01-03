@@ -14,6 +14,7 @@ export class Auth {
    * @param {NextPageContext} ctx get from next's getServerSideProps or getInitialProps : Context
    */
   static saveAuthToken(code, ctx) {
+    this.isAuthenticated = true;
     return setCookies(CookieKey.AuthToken, code, 2, ctx);
   }
 
@@ -32,11 +33,13 @@ export class Auth {
     const token = this.getAuthToken();
     const isAuthenticated = token && token.length > 0;
     this.isAuthenticated = isAuthenticated;
-    !isAuthenticated && router.push(`${this.redirectTo}?next=${ctx.asPath}`);
+    const next = ctx.asPath ? `?next=${ctx.asPath}` : '';
+    !isAuthenticated && router.push(`${this.redirectTo}${next}`);
+    return { isAuthenticated, token };
   }
 
   /**
-   * @param {NextPageContext} ctx from next's getServerSideProps or getInitialProps : Context
+   * @param {Request} req from next's getServerSideProps or getInitialProps : Context
    * @returns {String} String Token
    */
   static getAuthTokenOnServer(req) {
@@ -55,13 +58,14 @@ export class Auth {
   static authOnServer(ctx) {
     const { req, res } = ctx;
     try {
-      const token = this.getAuthTokenOnServer(ctx);
+      const token = this.getAuthTokenOnServer(req);
       const isAuthenticated = token && token.length > 0;
       this.isAuthenticated = isAuthenticated;
       if (!isAuthenticated) {
         res.writeHead(302, { Location: `${this.redirectTo}?next=${req.url}` });
         res.end();
       }
+      return { isAuthenticated, token };
     } catch (error) {
       logger.error(error);
     }
