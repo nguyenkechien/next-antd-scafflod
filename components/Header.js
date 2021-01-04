@@ -2,16 +2,12 @@ import PropTypes from 'prop-types';
 import Link from 'next/link';
 import getConfig from 'next/config';
 import { color_primary } from '../constants/CustomTheme';
-import { connect } from 'react-redux';
 import { useState } from 'react';
 import { Menu } from 'antd';
 import styled from 'styled-components';
-import { PRIVATE, PUBLIC } from '../constants/ConstTypes';
-import { bindActionCreators } from 'redux';
-import { userLogout } from '../redux/actions/user';
-
 const {
   publicRuntimeConfig: { staticFolder },
+  publicRuntimeConfig,
 } = getConfig();
 
 const { Item } = Menu;
@@ -72,29 +68,7 @@ const Header = ({ title, nav, userLogout, ...props }) => {
     </NavigationBar>
   );
 };
-
-const mapStateToProps = state => {
-  const header = state.common.system.header;
-  const isAuthenticated = state.user.auth.isAuthenticated;
-  const nav = Object.keys(header)
-    .map(item => header[item])
-    .map(item => {
-      console.log(item.title, item.type === PUBLIC && isAuthenticated);
-      item.hidden =
-        (item.type === PRIVATE && !isAuthenticated) ||
-        (item.type === PUBLIC && isAuthenticated);
-      return item;
-    });
-  return {
-    nav,
-  };
-};
-
-const mapDispatchToProps = dispatch => ({
-  userLogout: bindActionCreators(userLogout, dispatch),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default Header;
 
 Header.propTypes = {
   title: PropTypes.string,
@@ -105,7 +79,7 @@ Header.propTypes = {
 };
 
 Header.defaultProps = {
-  title: '',
+  title: publicRuntimeConfig.title || '',
   nav: [],
   isAuthenticated: false,
 };

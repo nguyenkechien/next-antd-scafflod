@@ -1,6 +1,9 @@
 const { resJson } = require('../../core/utilServer');
-const { Auth } = require('../../core/Auth');
+// const { Auth } = require('../../core/Auth');
 const findKey = require('lodash/findKey');
+const { getCookies } = require('../../core/Cookie');
+const { CookieKey } = require('../../constants/ConstTypes');
+
 const users = [
   {
     id: 1,
@@ -286,7 +289,7 @@ class User {
     );
   }
   static GetProfile(req, res) {
-    const tokenClient = Auth.getAuthTokenOnServer(req);
+    const tokenClient = getCookies(CookieKey.AuthToken, req);
     const username = findKey(fakeToke, value => value === tokenClient);
     if (!username) {
       return res.json(resJson({ status: 401, message: `Token fail` }));

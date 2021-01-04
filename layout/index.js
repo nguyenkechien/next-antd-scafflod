@@ -8,11 +8,11 @@ const Layout = ({ type, children, ...props }) => {
   switch (type) {
     case PRIVATE:
       return <Private {...props}>{children}</Private>;
+    case PUBLIC:
+      return <Public {...props}>{children}</Public>;
     case SHARE:
       return <Share {...props}>{children}</Share>;
-    case PUBLIC:
     default:
-      return <Public {...props}>{children}</Public>;
   }
 };
 Layout.Private = Private;
@@ -27,6 +27,6 @@ Layout.propTypes = {
 };
 
 Layout.defaultProps = {
-  type: PUBLIC,
+  type: SHARE,
   children: null,
 };

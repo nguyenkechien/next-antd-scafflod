@@ -31,6 +31,7 @@ if (typeof require !== 'undefined') {
 }
 
 const srcFolder = [
+  path.resolve('server'),
   path.resolve('components'),
   path.resolve('constants'),
   path.resolve('containers'),
@@ -115,6 +116,7 @@ module.exports = withLess({
     staticFolder: '/static',
     isDev, // Pass through env variables
     API_SERVER: isDev ? 'http://localhost:3006/api' : '/api',
+    title: 'Next-Antd-Scaffold',
   },
   env: {
     SERVER_HOST: 'http://localhost:1336',

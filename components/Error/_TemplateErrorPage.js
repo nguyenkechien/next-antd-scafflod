@@ -22,7 +22,7 @@ const TemplateErrorPage = ({ message, src, statusCode }) => (
     `}</style>
     <img className="error-image" alt="error-img" src={src} />
     <h3>
-      {message}| {statusCode}～
+      {message} | {statusCode}～
     </h3>
     <Button onClick={() => Router.push('/')} type="primary" ghost>
       Back Home

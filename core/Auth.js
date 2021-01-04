@@ -1,7 +1,6 @@
 import { CookieKey } from '../constants/ConstTypes';
 import logger from './Logger';
 import { getCookies, setCookies, deleteCookies } from './util';
-
 export class Auth {
   static info = null;
   static redirectTo = '/login';

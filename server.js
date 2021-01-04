@@ -1,43 +1,24 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-
 const cp = require('child_process');
 const path = require('path');
+const server = require('./server/index').default;
+
 const next = require('next');
 const { publicRuntimeConfig, serverRuntimeConfig } = require('./next.config');
-
 const { isDev } = publicRuntimeConfig;
 const { PORT } = serverRuntimeConfig;
 
 const app = next({ dev: isDev });
 const handle = app.getRequestHandler();
 
-const routes = require('./backend/routers');
-
 app.prepare().then(() => {
-  const server = express();
-  // deal /favicon.ico
-  server.use(
-    bodyParser.urlencoded({
-      extended: true,
-    }),
-  );
-  server.use(bodyParser.json());
-
-  server.get('/favicon.ico', (req, res) =>
-    res.sendFile(path.join(__dirname, 'static', 'favicon.ico')),
-  );
-
   server.get('/user/detail/:username', (req, res) => {
     const { username } = req.params;
     return app.render(req, res, '/user/detail', { username });
   });
-
-  server.use(routes);
-
-  server.get('*', (req, res) => {
-    return handle(req, res);
-  });
+  server.get('/favicon.ico', (req, res) =>
+    res.sendFile(path.join(__dirname, 'static', 'favicon.ico')),
+  );
+  server.get('*', (req, res) => handle(req, res));
 
   server.listen(PORT, err => {
     if (err) throw err;

@@ -14,21 +14,7 @@ import Router from 'next/router';
 import { Auth } from '../core/util';
 import logger from '../core/Logger';
 import { fetchSystemData } from '../redux/actions/common';
-const GlobalStyle = createGlobalStyle`
-  #nprogress {
-    pointer-events: none;
-  }
-
-  #nprogress .bar {
-    background: ${color_nprogress};
-    position: fixed;
-    z-index: 999999999999;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-  }
-`;
+import Header from '../containers/Header';
 
 class NextApp extends App {
   static redirectToLogin(ctx) {
@@ -44,14 +30,16 @@ class NextApp extends App {
   static async getInitialProps({ Component, ctx, router }) {
     let pageProps = {};
     const { pathname, store, isServer } = ctx;
-    if (isServer) store.dispatch(fetchSystemData());
+    const { isAuthenticated } = Auth.authOnServer(ctx);
+    pageProps = { ...pageProps, isAuthenticated };
+
+    if (isServer) {
+      store.dispatch(fetchSystemData());
+    }
 
     const route = pathname;
     const routerType = RouterType[route] && RouterType[route].type;
     logger.log('\nroute: ', route, '\nroute type: ', routerType, '\n', router);
-
-    const { isAuthenticated } = Auth.authOnServer(ctx);
-    pageProps = { ...pageProps, isAuthenticated };
 
     if ([PRIVATE, PUBLIC].includes(routerType)) {
       if (!isAuthenticated && routerType === PRIVATE) {
@@ -106,6 +94,7 @@ class NextApp extends App {
         <Container>
           <Provider store={store}>
             <Layout type={type} title={title} {...pageProps} {...router}>
+              <Header title={title} {...pageProps} {...router} />
               <Component {...pageProps} router={router} />
               <GlobalStyle />
             </Layout>
@@ -117,3 +106,19 @@ class NextApp extends App {
 }
 
 export default withRedux(createStore)(withReduxSaga({ async: true })(NextApp));
+
+const GlobalStyle = createGlobalStyle`
+  #nprogress {
+    pointer-events: none;
+  }
+
+  #nprogress .bar {
+    background: ${color_nprogress};
+    position: fixed;
+    z-index: 999999999999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+  }
+`;
