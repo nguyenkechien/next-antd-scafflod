@@ -4,10 +4,13 @@ import rootReducer from './reducers/index';
 import rootSaga from './sagas/index';
 import userMiddleware from '../middlewares/client/user';
 
+const customMiddleware = [userMiddleware];
+
 const sagaMiddleware = createSagaMiddleware();
 
 const bindMiddleware = middleware => {
-  middleware.push(userMiddleware);
+  customMiddleware.forEach(item => middleware.push(item));
+
   if (process.env.NODE_ENV !== 'production') {
     const { composeWithDevTools } = require('redux-devtools-extension');
     const { logger } = require('redux-logger');

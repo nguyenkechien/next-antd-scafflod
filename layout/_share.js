@@ -9,7 +9,7 @@ const Share = ({ title, children, ...props }) => {
   }, []);
   return (
     <>
-      <Header title={title} />
+      <Header title={title} {...props} />
       <div className="content-container">{children}</div>
     </>
   );

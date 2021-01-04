@@ -1,4 +1,5 @@
 const { resJson } = require('../../core/utilServer');
+const { Auth } = require('../../core/Auth');
 const findKey = require('lodash/findKey');
 const users = [
   {
@@ -244,6 +245,11 @@ const RoleType = {
   },
 };
 
+const fakeToke = {
+  admin: 'admin-token',
+  user: 'user-token',
+};
+
 class User {
   constructor() {}
   static GetUsers(req, res) {
@@ -273,10 +279,22 @@ class User {
         status: 200,
         message: `Login Success`,
         result: {
-          token: 'my-token',
+          token: fakeToke[RoleType[userRole].username],
           position: userRole,
         },
       }),
+    );
+  }
+  static GetProfile(req, res) {
+    const tokenClient = Auth.getAuthTokenOnServer(req);
+    const username = findKey(fakeToke, value => value === tokenClient);
+    if (!username) {
+      return res.json(resJson({ status: 401, message: `Token fail` }));
+    }
+    const userRole = findKey(RoleType, { username });
+
+    return res.json(
+      resJson({ status: 200, message: `Success`, result: RoleType[userRole] }),
     );
   }
 }

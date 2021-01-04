@@ -5,7 +5,7 @@ import withRedux from 'next-redux-wrapper';
 import withReduxSaga from 'next-redux-saga';
 import createStore from '../redux/store';
 import Layout from '../layout';
-import { PRIVATE, RouterType } from '../constants/ConstTypes';
+import { PRIVATE, PUBLIC, RouterType } from '../constants/ConstTypes';
 import '../assets/self-styles.less';
 import NProgress from 'nprogress';
 import { createGlobalStyle } from 'styled-components';
@@ -13,7 +13,7 @@ import { color_nprogress } from '../constants/CustomTheme';
 import Router from 'next/router';
 import { Auth } from '../core/util';
 import logger from '../core/Logger';
-
+import { fetchSystemData } from '../redux/actions/common';
 const GlobalStyle = createGlobalStyle`
   #nprogress {
     pointer-events: none;
@@ -31,14 +31,34 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 class NextApp extends App {
+  static redirectToLogin(ctx) {
+    const { req, res, asPath } = ctx;
+    if (res) {
+      res.writeHead(302, { Location: `${Auth.redirectTo}?next=${req.url}` });
+      res.end();
+    } else {
+      const next = asPath ? `?next=${asPath}` : '';
+      Router.push(`${Auth.redirectTo}${next}`);
+    }
+  }
   static async getInitialProps({ Component, ctx, router }) {
     let pageProps = {};
+    const { pathname, store, isServer } = ctx;
+    if (isServer) store.dispatch(fetchSystemData());
 
-    const route = (router && router.route) || '';
+    const route = pathname;
     const routerType = RouterType[route] && RouterType[route].type;
     logger.log('\nroute: ', route, '\nroute type: ', routerType, '\n', router);
 
-    if ([PRIVATE].includes(routerType) && ctx.req) Auth.authOnServer(ctx);
+    const { isAuthenticated } = Auth.authOnServer(ctx);
+    pageProps = { ...pageProps, isAuthenticated };
+
+    if ([PRIVATE, PUBLIC].includes(routerType)) {
+      if (!isAuthenticated && routerType === PRIVATE) {
+        this.redirectToLogin(ctx);
+      }
+      if (!isAuthenticated) return { pageProps };
+    }
 
     if (Component.getInitialProps) {
       const initProps = await Component.getInitialProps({ ctx });
@@ -85,7 +105,7 @@ class NextApp extends App {
         </Head>
         <Container>
           <Provider store={store}>
-            <Layout type={type} title={title} {...router}>
+            <Layout type={type} title={title} {...pageProps} {...router}>
               <Component {...pageProps} router={router} />
               <GlobalStyle />
             </Layout>

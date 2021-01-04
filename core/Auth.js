@@ -1,4 +1,3 @@
-import router from 'next/router';
 import { CookieKey } from '../constants/ConstTypes';
 import logger from './Logger';
 import { getCookies, setCookies, deleteCookies } from './util';
@@ -26,19 +25,6 @@ export class Auth {
   }
 
   /**
-   *
-   * @param {NextPageContext} ctx
-   */
-  static authOnClient(ctx = {}) {
-    const token = this.getAuthToken();
-    const isAuthenticated = token && token.length > 0;
-    this.isAuthenticated = isAuthenticated;
-    const next = ctx.asPath ? `?next=${ctx.asPath}` : '';
-    !isAuthenticated && router.push(`${this.redirectTo}${next}`);
-    return { isAuthenticated, token };
-  }
-
-  /**
    * @param {Request} req from next's getServerSideProps or getInitialProps : Context
    * @returns {String} String Token
    */
@@ -56,15 +42,11 @@ export class Auth {
    * @param {NextPageContext} ctx
    */
   static authOnServer(ctx) {
-    const { req, res } = ctx;
+    const { req } = ctx;
     try {
       const token = this.getAuthTokenOnServer(req);
       const isAuthenticated = token && token.length > 0;
       this.isAuthenticated = isAuthenticated;
-      if (!isAuthenticated) {
-        res.writeHead(302, { Location: `${this.redirectTo}?next=${req.url}` });
-        res.end();
-      }
       return { isAuthenticated, token };
     } catch (error) {
       logger.error(error);

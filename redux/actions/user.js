@@ -5,10 +5,12 @@ import {
   USER_LOGIN,
   USER_LOGIN_FAIL,
   USER_LOGIN_SUCCESS,
+  USER_LOGOUT,
 } from '../../constants/ActionTypes';
 import { RoleType } from '../../constants/ConstTypes';
 import { Auth } from '../../core/util';
 import logger from './../../core/Logger';
+import router from 'next/router';
 
 export const fetchUserListData = () => ({ type: FETCH_USER_LIST });
 
@@ -34,3 +36,9 @@ export const userLoginSuccess = (payload = {}) => {
 };
 
 export const userLoginFail = () => ({ type: USER_LOGIN_FAIL });
+
+export const userLogout = () => {
+  Auth.deleteAuthToken();
+  router.push(Auth.redirectTo);
+  return { type: USER_LOGOUT };
+};

@@ -1,22 +1,18 @@
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
-import { useEffect, useState } from 'react';
-import { Auth } from '../core/util';
+import { useEffect } from 'react';
 import ErrorPage from '../components/Error/ErrorPage';
 import logger from '../core/Logger';
 
-const Public = ({ title, children, ...props }) => {
-  const [isAuth, setAuth] = useState(Auth.isAuthenticated);
+const Public = ({ title, children, isAuthenticated, ...props }) => {
   useEffect(() => {
     logger.log(`layout-props`, props);
-    const { isAuthenticated } = Auth.authOnClient();
-    if (!isAuth && isAuthenticated) setAuth(isAuthenticated);
   }, []);
   return (
     <>
-      <Header title={title} />
+      <Header title={title} isAuthenticated={isAuthenticated} {...props} />
       <div className="content-container">
-        {isAuth ? <ErrorPage statusCode={403} /> : children}
+        {isAuthenticated ? <ErrorPage statusCode={403} /> : children}
       </div>
     </>
   );
@@ -24,11 +20,13 @@ const Public = ({ title, children, ...props }) => {
 Public.propTypes = {
   title: PropTypes.string,
   children: PropTypes.any,
+  isAuthenticated: PropTypes.any,
 };
 
 Public.defaultProps = {
   title: '',
   children: null,
+  isAuthenticated: false,
 };
 
 export default Public;

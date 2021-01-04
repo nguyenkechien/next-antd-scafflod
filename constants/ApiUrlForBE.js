@@ -17,4 +17,11 @@ export default {
      */
     login: `${API_SERVER}/users/login`,
   },
+  System: {
+    /**
+     * Get System list
+     * @method GET
+     */
+    getAll: `${API_SERVER}/system/all`,
+  },
 };
