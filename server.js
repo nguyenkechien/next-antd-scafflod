@@ -1,4 +1,3 @@
-const cp = require('child_process');
 const path = require('path');
 const server = require('./server/index').default;
 
@@ -20,24 +19,5 @@ app.prepare().then(() => {
   );
   server.get('*', (req, res) => handle(req, res));
 
-  server.listen(PORT, err => {
-    if (err) throw err;
-    const serverUrl = `http://localhost:${PORT}`;
-    console.log(`> Ready on ${serverUrl}`);
-    // development auto open browser
-    if (isDev) {
-      switch (process.platform) {
-        // macos
-        case 'darwin':
-          cp.exec(`open ${serverUrl}`);
-          break;
-        // windows
-        case 'win32':
-          cp.exec(`start ${serverUrl}`);
-          break;
-        default:
-          cp.exec(`open ${serverUrl}`);
-      }
-    }
-  });
+  server.startServer(PORT, isDev);
 });
