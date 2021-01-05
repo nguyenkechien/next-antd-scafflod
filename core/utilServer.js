@@ -16,4 +16,12 @@ const resJson = ({
   result = null,
 }) => ({ code: status, message, errors, result });
 
-module.exports = { resJson, resType };
+const getTokenHeader = (req = {}, key = 'authorization') => {
+  /**
+   * @type {string}
+   */
+  const token = req.headers[key];
+  return token ? token.split('Bearer ').join('') : '';
+};
+
+module.exports = { resJson, resType, getTokenHeader };

@@ -16,11 +16,6 @@ export const propsType = {
  * @param {propsType} props
  */
 const UserLogin = props => {
-  // console.log(props);
-  // const onFinish = values => {
-  //   console.log('Success:', values);
-  // };
-
   const onFinishFailed = errorInfo => {
     console.log('Failed:', errorInfo);
   };
@@ -29,37 +24,23 @@ const UserLogin = props => {
     <Form
       {...layout}
       name="basic"
-      initialValues={{
-        remember: true,
-      }}
+      initialValues={{ remember: true }}
       onFinish={props.userLogin}
       onFinishFailed={onFinishFailed}
     >
       <Form.Item
         label="Username"
         name="username"
-        rules={[
-          {
-            required: true,
-            message: 'Please input your username!',
-          },
-        ]}
-      >
-        <Input />
-      </Form.Item>
+        rules={[{ required: true, message: 'Please input your username!' }]}
+        children={<Input />}
+      />
 
       <Form.Item
         label="Password"
         name="password"
-        rules={[
-          {
-            required: true,
-            message: 'Please input your password!',
-          },
-        ]}
-      >
-        <Input.Password />
-      </Form.Item>
+        rules={[{ required: true, message: 'Please input your password!' }]}
+        children={<Input.Password />}
+      />
 
       <Form.Item {...tailLayout} name="remember" valuePropName="checked">
         <Checkbox>Remember me</Checkbox>

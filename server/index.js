@@ -4,13 +4,8 @@ import routes from './routers';
 const cp = require('child_process');
 
 const server = express();
-server.use(
-  bodyParser.urlencoded({
-    extended: true,
-  }),
-);
+server.use(bodyParser.urlencoded({ extended: true }));
 server.use(bodyParser.json());
-
 server.use(routes);
 
 /**

@@ -1,8 +1,7 @@
-const { resJson } = require('../../core/utilServer');
-// const { Auth } = require('../../core/Auth');
+const { resJson, getTokenHeader } = require('../../core/utilServer');
 const findKey = require('lodash/findKey');
-const { getCookies } = require('../../core/Cookie');
-const { CookieKey } = require('../../constants/ConstTypes');
+// const { getCookies } = require('../../core/Cookie');
+// const { CookieKey } = require('../../constants/ConstTypes');
 
 const users = [
   {
@@ -253,12 +252,11 @@ const fakeToke = {
   user: 'user-token',
 };
 
-class User {
-  constructor() {}
-  static GetUsers(req, res) {
+const User = {
+  GetUsers(req, res) {
     return res.json(resJson({ result: users }));
-  }
-  static SignIn(req, res) {
+  },
+  SignIn(req, res) {
     if (!req.body) {
       return res.json(
         resJson({
@@ -287,9 +285,11 @@ class User {
         },
       }),
     );
-  }
-  static GetProfile(req, res) {
-    const tokenClient = getCookies(CookieKey.AuthToken, req);
+  },
+  GetProfile(req, res) {
+    // const tokenClient = getCookies(CookieKey.AuthToken, req);
+    const tokenClient = getTokenHeader(req);
+    console.log(tokenClient);
     const username = findKey(fakeToke, value => value === tokenClient);
     if (!username) {
       return res.json(resJson({ status: 401, message: `Token fail` }));
@@ -299,7 +299,7 @@ class User {
     return res.json(
       resJson({ status: 200, message: `Success`, result: RoleType[userRole] }),
     );
-  }
-}
+  },
+};
 
-module.exports = User;
+export default User;

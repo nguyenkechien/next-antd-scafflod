@@ -147,7 +147,6 @@ webpack: function (cfg) {
 
 ```
 // _app.js -> getInitialProps
-  /* 刷新页面 antd闪动 */
   if (typeof window !== "undefined") {
     window.onload = () => {
       document.getElementById("flashStyle").remove();

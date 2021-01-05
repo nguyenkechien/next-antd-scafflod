@@ -6,20 +6,14 @@ import {
   USER_LOGIN_FAIL,
   USER_LOGIN_SUCCESS,
   USER_LOGOUT,
+  FETCH_USER_PROFILE,
+  FETCH_USER_PROFILE_FAIL,
+  FETCH_USER_PROFILE_SUCCESS,
 } from '../../constants/ActionTypes';
 import { RoleType } from '../../constants/ConstTypes';
 import { Auth } from '../../core/util';
 import logger from './../../core/Logger';
 import router from 'next/router';
-
-export const fetchUserListData = () => ({ type: FETCH_USER_LIST });
-
-export const fetchUserListDataSuccess = payload => ({
-  type: FETCH_USER_LIST_SUCCESS,
-  payload,
-});
-
-export const fetchUserListDataFail = () => ({ type: FETCH_USER_LIST_FAIL });
 
 export const userLogin = payload => ({ type: USER_LOGIN, payload });
 
@@ -42,3 +36,24 @@ export const userLogout = () => {
   router.push(Auth.redirectTo);
   return { type: USER_LOGOUT };
 };
+
+export const fetchUserListData = () => ({ type: FETCH_USER_LIST });
+
+export const fetchUserListDataSuccess = payload => ({
+  type: FETCH_USER_LIST_SUCCESS,
+  payload,
+});
+
+export const fetchUserListDataFail = () => ({ type: FETCH_USER_LIST_FAIL });
+
+export const fetchUserProfile = (payload = '') => ({
+  type: FETCH_USER_PROFILE,
+  payload,
+});
+
+export const fetchUserProfileFail = () => ({ type: FETCH_USER_PROFILE_FAIL });
+
+export const fetchUserProfileSuccess = payload => ({
+  type: FETCH_USER_PROFILE_SUCCESS,
+  payload,
+});

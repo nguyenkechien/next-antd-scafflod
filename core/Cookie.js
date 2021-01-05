@@ -35,6 +35,7 @@ export const setCookies = (key, value, duration, ctx) => {
  *
  * @param {String} key cookie's key
  * @param {Request} req get from next's getServerSideProps or getInitialProps : Context
+ * @returns {string}
  */
 export const getCookies = (key, req) => {
   if (process.browser) return getCookiesFromClient(key);
@@ -44,6 +45,7 @@ export const getCookies = (key, req) => {
 /**
  *
  * @param {String} key
+ * @returns {string}
  */
 export const getCookiesFromClient = key => {
   const name = key + '=';
@@ -63,6 +65,7 @@ export const getCookiesFromClient = key => {
  *
  * @param {String} key cookie's key
  * @param {Request} req get from next's getServerSideProps or getInitialProps : Context
+ * @returns {string}
  */
 export const getCookiesFromServer = (key, req) => {
   if (req.headers.cookie) {

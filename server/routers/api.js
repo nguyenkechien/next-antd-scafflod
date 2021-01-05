@@ -1,10 +1,9 @@
-const express = require('express');
-const User = require('../controllers/User.controller');
-const Systems = require('../controllers/Systems.controller');
-const Router = express.Router();
-// const { asyncMiddleware } = require('./../../middlewares/server');
+import express from 'express';
+import User from '../controllers/User.controller';
+import Systems from '../controllers/Systems.controller';
 import { asyncMiddleware } from './../../middlewares/server';
 
+const Router = express.Router();
 Router.prefix('/users', router => {
   router.route('/').get(asyncMiddleware(User.GetUsers));
   router.route('/profile').get(asyncMiddleware(User.GetProfile));

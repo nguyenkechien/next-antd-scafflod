@@ -23,8 +23,8 @@ const RouterType = {
   },
 };
 
-class Systems {
-  static GetAll(req, res) {
+const Systems = {
+  GetAll(req, res) {
     return res.json(
       resJson({
         result: {
@@ -32,7 +32,7 @@ class Systems {
         },
       }),
     );
-  }
-}
+  },
+};
 
-module.exports = Systems;
+export default Systems;

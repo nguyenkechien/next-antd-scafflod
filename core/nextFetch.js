@@ -1,11 +1,18 @@
 /* eslint-disable no-unused-vars */
 import fetch from 'isomorphic-unfetch';
+import { reject } from 'lodash';
 import qs from 'query-string';
 import { Auth } from './Auth';
 import logger from './Logger';
 import { filterObject } from './util';
-const { resType } = require('./utilServer');
-export const configType = { data: Object, query: Object, timeout: Number };
+import { resType } from './utilServer';
+
+export const configType = {
+  data: Object,
+  query: Object,
+  timeout: Number,
+  headers: Object,
+};
 export const methodsType = {
   /**
    *
@@ -49,13 +56,17 @@ const CAN_SEND_METHOD = ['post', 'put', 'delete', 'patch'];
 HTTP_METHOD.forEach(method => {
   // is can send data in opt.body
   const canSend = CAN_SEND_METHOD.includes(method);
-  nextFetch[method] = (path, { data, query, timeout = 10000 } = {}) => {
+  nextFetch[method] = (
+    path,
+    { data, query, timeout = 10000, headers = {} } = {},
+  ) => {
     let url = path;
     const opts = {
       method,
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         Accept: 'application/json',
+        ...headers,
       },
       credentials: 'include',
       timeout,
@@ -70,23 +81,25 @@ HTTP_METHOD.forEach(method => {
 
     if (canSend && data) {
       opts.body = qs.stringify(filterObject(data, Boolean));
-      opts.headers.Authorization = `bearer ${Auth.getAuthToken()}`;
+      opts.headers.Authorization = `Bearer ${Auth.getAuthToken()}`;
     }
 
     logger.info('Request Url:', url);
 
-    return new Promise((resolve, reject) => resolve(fetch(url, opts)))
-      .then(res => res.json())
-      .then(({ code = 200, message, errors, ...res }) => {
-        if (code >= 400 && message && errors === null) {
-          const err = new Error(message);
-          err.message = message;
-          err.code = status;
-          err.data = data;
-          throw err;
-        }
-        return res;
-      });
+    return new Promise((resolve, reject) => {
+      fetch(url, opts)
+        .then(res => res.json())
+        .then(({ code = 200, message, errors, ...res }) => {
+          if (code >= 400) {
+            if (message && errors === null) {
+              reject({ code, error: message });
+            } else {
+              reject({ code, errors });
+            }
+          }
+          resolve(res);
+        });
+    });
   };
 });
 

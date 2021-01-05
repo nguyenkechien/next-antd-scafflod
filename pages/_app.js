@@ -15,7 +15,7 @@ import { Auth } from '../core/util';
 import logger from '../core/Logger';
 import { fetchSystemData } from '../redux/actions/common';
 import Header from '../containers/Header';
-
+import { fetchUserProfile } from '../redux/actions/user';
 class NextApp extends App {
   static redirectToLogin(ctx) {
     const { req, res, asPath } = ctx;
@@ -30,22 +30,22 @@ class NextApp extends App {
   static async getInitialProps({ Component, ctx, router }) {
     let pageProps = {};
     const { pathname, store, isServer } = ctx;
-    const { isAuthenticated } = Auth.authOnServer(ctx);
-    pageProps = { ...pageProps, isAuthenticated };
 
-    if (isServer) {
-      store.dispatch(fetchSystemData());
-    }
+    let { isAuthenticated, token } = Auth.authOnServer(ctx);
+    pageProps = { ...pageProps, isAuthenticated };
 
     const route = pathname;
     const routerType = RouterType[route] && RouterType[route].type;
     logger.log('\nroute: ', route, '\nroute type: ', routerType, '\n', router);
 
     if ([PRIVATE, PUBLIC].includes(routerType)) {
-      if (!isAuthenticated && routerType === PRIVATE) {
-        this.redirectToLogin(ctx);
-      }
+      if (!isAuthenticated && routerType === PRIVATE) this.redirectToLogin(ctx);
       if (!isAuthenticated) return { pageProps };
+    }
+
+    if (isServer) {
+      store.dispatch(fetchUserProfile(token));
+      store.dispatch(fetchSystemData());
     }
 
     if (Component.getInitialProps) {

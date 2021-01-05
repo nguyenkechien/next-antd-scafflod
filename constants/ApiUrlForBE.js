@@ -10,6 +10,11 @@ export default {
      * Get user list
      * @method GET
      */
+    getUserProfile: `${API_SERVER}/users/profile`,
+    /**
+     * Get user list
+     * @method GET
+     */
     getUserList: `${API_SERVER}/users`,
     /**
      * Get user list
