@@ -1,7 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ErrorPage from '../components/Error/ErrorPage';
-export default class Error extends React.Component {
+
+interface Props {
+  statusCode?: number
+}
+export default class Error extends React.Component<Props> {
   static propTypes = {
     statusCode: PropTypes.number,
   };

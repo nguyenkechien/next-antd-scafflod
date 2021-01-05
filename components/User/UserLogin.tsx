@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import * as React from 'react';
 import { Form, Input, Button, Checkbox } from 'antd';
 const layout = {
   labelCol: { span: 8 },
@@ -7,21 +8,15 @@ const layout = {
 const tailLayout = {
   wrapperCol: { offset: 8, span: 16 },
 };
-export const propsType = {
-  router: PropTypes.object.isRequired,
-  userLogin: PropTypes.func.isRequired,
-};
-/**
- *
- * @param {propsType} props
- */
-const UserLogin = props => {
-  // console.log(props);
-  // const onFinish = values => {
-  //   console.log('Success:', values);
-  // };
 
-  const onFinishFailed = errorInfo => {
+
+interface Props {
+  router: Object,
+  userLogin: React.VoidFunctionComponent,
+}
+
+const UserLogin: React.FC<Props> = (props) => {
+  const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
 
@@ -76,4 +71,7 @@ const UserLogin = props => {
 
 export default UserLogin;
 
-UserLogin.propTypes = propsType;
+UserLogin.propTypes = {
+  router: PropTypes.object.isRequired,
+  userLogin: PropTypes.func.isRequired,
+};

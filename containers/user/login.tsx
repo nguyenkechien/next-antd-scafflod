@@ -3,7 +3,10 @@ import { userLogin } from '../../redux/actions/user';
 import UserLogin from '../../components/User/UserLogin';
 import { bindActionCreators } from 'redux';
 
-const mapStateToProps = state => ({ errors: state.auth });
+interface State {
+  auth?: Object
+}
+const mapStateToProps = (state: State) => ({ errors: state.auth });
 
 const mapDispatchToProps = dispatch => ({
   userLogin: bindActionCreators(userLogin, dispatch),

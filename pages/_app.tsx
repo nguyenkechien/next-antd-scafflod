@@ -1,4 +1,5 @@
 import App, { Container } from 'next/app';
+import { GetStaticProps } from 'next';
 import Head from 'next/head';
 import { Provider } from 'react-redux';
 import withRedux from 'next-redux-wrapper';
@@ -12,11 +13,13 @@ import { createGlobalStyle } from 'styled-components';
 import { color_nprogress } from '../constants/CustomTheme';
 import Router from 'next/router';
 import { Auth } from '../core/util';
-import logger from '../core/Logger';
 import { fetchSystemData } from '../redux/actions/common';
 import Header from '../containers/Header';
 
+interface Props { Component?: any; pageProps?: Object; store?: Object; router?: { pathname: string; }; }
+
 class NextApp extends App {
+  props: Props
   static redirectToLogin(ctx) {
     const { req, res, asPath } = ctx;
     if (res) {
@@ -27,8 +30,8 @@ class NextApp extends App {
       Router.push(`${Auth.redirectTo}${next}`);
     }
   }
-  static async getInitialProps({ Component, ctx, router }) {
-    let pageProps = {};
+  static async getInitialProps({ Component, ctx, router = Object }): GetStaticProps {
+    let pageProps: Object = {};
     const { pathname, store, isServer } = ctx;
     const { isAuthenticated } = Auth.authOnServer(ctx);
     pageProps = { ...pageProps, isAuthenticated };
@@ -37,9 +40,9 @@ class NextApp extends App {
       store.dispatch(fetchSystemData());
     }
 
-    const route = pathname;
-    const routerType = RouterType[route] && RouterType[route].type;
-    logger.log('\nroute: ', route, '\nroute type: ', routerType, '\n', router);
+    const route: string = pathname;
+    const routerType: string = RouterType[route] && RouterType[route].type || '';
+    console.log('route: ', route, '\nroute type: ', routerType, '\n', router);
 
     if ([PRIVATE, PUBLIC].includes(routerType)) {
       if (!isAuthenticated && routerType === PRIVATE) {
@@ -53,7 +56,7 @@ class NextApp extends App {
       pageProps = { ...pageProps, ...initProps };
     }
 
-    logger.log(`pageProps`, pageProps);
+    console.log(`pageProps`, pageProps);
     return { pageProps };
   }
 

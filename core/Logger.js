@@ -2,6 +2,7 @@ import getConfig from 'next/config';
 const {
   publicRuntimeConfig: { isDev },
 } = getConfig();
+
 let logger = {
   log: function() {},
   error: function() {},

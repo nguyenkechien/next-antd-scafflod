@@ -1,0 +1,28 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "allowJs": true,
+    "lib": ["es2016", "dom"],
+    "target": "esnext",
+    "module": "esnext",
+    "jsx": "preserve",
+    "sourceMap": true,
+    "allowSyntheticDefaultImports": true,
+    "removeComments": false,
+    "moduleResolution": "node",
+    "preserveConstEnums": true,
+    "skipLibCheck": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitThis": true,
+    "baseUrl": ".",
+    "typeRoots": ["./typings", "./node_modules/@types"],
+    "paths": {
+      "*": ["*"]
+    }
+  },
+  "include": ["./**/*.ts"],
+  "exclude": ["node_modules"]
+}
