@@ -1,9 +1,8 @@
-import UserDetail from '../../components/User/UserDetail';
+import UserDetail from '../../containers/User/detail';
 
-UserDetail.getInitialProps = async (props) => {
+UserDetail.getInitialProps = async props => {
   const { isServer } = props.ctx;
   return { isServer };
 };
 
 export default UserDetail;
-

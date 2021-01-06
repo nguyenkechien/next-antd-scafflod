@@ -10,7 +10,6 @@ const mapStateToProps = state => {
   const nav = Object.keys(header)
     .map(item => header[item])
     .map(item => {
-      console.log(item.title, item.type === PUBLIC && isAuthenticated);
       item.hidden =
         (item.type === PRIVATE && !isAuthenticated) ||
         (item.type === PUBLIC && isAuthenticated);

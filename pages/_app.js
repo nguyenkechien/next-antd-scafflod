@@ -5,7 +5,13 @@ import withRedux from 'next-redux-wrapper';
 import withReduxSaga from 'next-redux-saga';
 import createStore from '../redux/store';
 import Layout from '../layout';
-import { PRIVATE, PUBLIC, RouterType } from '../constants/ConstTypes';
+import {
+  PRIVATE,
+  PRIVATE_ADMIN,
+  PUBLIC,
+  RoleType,
+  RouterType,
+} from '../constants/ConstTypes';
 import '../assets/self-styles.less';
 import NProgress from 'nprogress';
 import { createGlobalStyle } from 'styled-components';
@@ -15,7 +21,8 @@ import { Auth } from '../core/util';
 import logger from '../core/Logger';
 import { fetchSystemData } from '../redux/actions/common';
 import Header from '../containers/Header';
-import { fetchUserProfile } from '../redux/actions/user';
+import ErrorPage from '../components/Error/ErrorPage';
+
 class NextApp extends App {
   static redirectToLogin(ctx) {
     const { req, res, asPath } = ctx;
@@ -28,24 +35,29 @@ class NextApp extends App {
     }
   }
   static async getInitialProps({ Component, ctx, router }) {
-    let pageProps = {};
+    let pageProps = { statusCode: 200 };
     const { pathname, store, isServer } = ctx;
 
-    let { isAuthenticated, token } = Auth.authOnServer(ctx);
+    let { isAuthenticated, role } = await Auth.authOnServer(ctx);
     pageProps = { ...pageProps, isAuthenticated };
 
     const route = pathname;
     const routerType = RouterType[route] && RouterType[route].type;
     logger.log('\nroute: ', route, '\nroute type: ', routerType, '\n', router);
 
-    if ([PRIVATE, PUBLIC].includes(routerType)) {
-      if (!isAuthenticated && routerType === PRIVATE) this.redirectToLogin(ctx);
-      if (!isAuthenticated) return { pageProps };
+    if (isServer) store.dispatch(fetchSystemData());
+
+    if (!isAuthenticated && [PRIVATE, PRIVATE_ADMIN].includes(routerType)) {
+      this.redirectToLogin(ctx);
+      return { pageProps };
     }
 
-    if (isServer) {
-      store.dispatch(fetchUserProfile(token));
-      store.dispatch(fetchSystemData());
+    if (
+      isAuthenticated &&
+      (routerType === PUBLIC ||
+        (routerType === PRIVATE_ADMIN && role === RoleType[10]))
+    ) {
+      return { pageProps: { ...pageProps, statusCode: 403 } };
     }
 
     if (Component.getInitialProps) {
@@ -76,7 +88,7 @@ class NextApp extends App {
       pageProps,
       store,
       router,
-      router: { pathname },
+      router: { pathname, route },
     } = this.props;
     const { title, type } = RouterType[pathname] || {};
     return (
@@ -93,9 +105,13 @@ class NextApp extends App {
         </Head>
         <Container>
           <Provider store={store}>
-            <Layout type={type} title={title} {...pageProps} {...router}>
+            <Layout type={type} title={title} {...pageProps} route={route}>
               <Header title={title} {...pageProps} {...router} />
-              <Component {...pageProps} router={router} />
+              {pageProps.statusCode >= 400 ? (
+                <ErrorPage statusCode={pageProps.statusCode} />
+              ) : (
+                <Component {...pageProps} router={router} />
+              )}
               <GlobalStyle />
             </Layout>
           </Provider>

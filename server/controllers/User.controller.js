@@ -1,7 +1,5 @@
 const { resJson, getTokenHeader } = require('../../core/utilServer');
 const findKey = require('lodash/findKey');
-// const { getCookies } = require('../../core/Cookie');
-// const { CookieKey } = require('../../constants/ConstTypes');
 
 const users = [
   {
@@ -287,9 +285,7 @@ const User = {
     );
   },
   GetProfile(req, res) {
-    // const tokenClient = getCookies(CookieKey.AuthToken, req);
     const tokenClient = getTokenHeader(req);
-    console.log(tokenClient);
     const username = findKey(fakeToke, value => value === tokenClient);
     if (!username) {
       return res.json(resJson({ status: 401, message: `Token fail` }));
@@ -297,7 +293,11 @@ const User = {
     const userRole = findKey(RoleType, { username });
 
     return res.json(
-      resJson({ status: 200, message: `Success`, result: RoleType[userRole] }),
+      resJson({
+        status: 200,
+        message: `Success`,
+        result: { ...RoleType[userRole], position: userRole },
+      }),
     );
   },
 };

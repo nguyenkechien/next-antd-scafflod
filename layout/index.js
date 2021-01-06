@@ -2,11 +2,12 @@ import PropTypes from 'prop-types';
 import Private from './_private';
 import Share from './_share';
 import Public from './_public';
-import { PUBLIC, PRIVATE, SHARE } from '../constants/ConstTypes';
+import { PUBLIC, PRIVATE, SHARE, PRIVATE_ADMIN } from '../constants/ConstTypes';
 
 const Layout = ({ type, children, ...props }) => {
   switch (type) {
     case PRIVATE:
+    case PRIVATE_ADMIN:
       return <Private {...props}>{children}</Private>;
     case PUBLIC:
       return <Public {...props}>{children}</Public>;

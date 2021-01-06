@@ -40,13 +40,12 @@ export function* userLogin({ payload: data }) {
   }
 }
 
-export function* fetchUserProfile({ payload: token }) {
+export function* fetchUserProfile({ payload: req }) {
   try {
     const config = {
-      headers: { Authorization: 'Bearer ' + token || Auth.getAuthToken() },
+      headers: { Authorization: 'Bearer ' + Auth.getAuthTokenOnServer(req) },
     };
     const res = yield nextFetch.get(Endpoint.User.getUserProfile, config);
-    console.log(`res`, res);
     yield put(fetchUserProfileSuccess(res.result));
   } catch (e) {
     logger.error(e);

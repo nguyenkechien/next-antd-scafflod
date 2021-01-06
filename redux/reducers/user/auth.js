@@ -22,7 +22,6 @@ const auth = (state = initialState, { type, payload }) => {
       return {
         ...state,
         ...payload,
-        ...{ isAuthenticated: true },
       };
     case FETCH_USER_PROFILE:
       return { ...state };

@@ -9,7 +9,8 @@ export default class Error extends React.Component {
     statusCode: 200,
   };
   // eslint-disable-next-line react/sort-comp
-  static getInitialProps({ res, err }) {
+  static getInitialProps({ ctx: res, err }) {
+    console.log(`err`, err);
     const statusCode = res ? res.statusCode : err ? err.statusCode : 500;
     return { statusCode };
   }

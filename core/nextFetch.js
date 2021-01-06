@@ -18,29 +18,28 @@ export const methodsType = {
    *
    * @param {String} path
    * @param {configType} config
-   * @returns {resType}
    */
-  get: async (path, config) => {},
+  get: async (path, config) => await Promise.resolve(resType),
   /**
    *
    * @param {String} path
    * @param {configType} config
    */
-  post: async (path, config) => {},
-  /**
-   *
-   * @param {String} path
-   * @param {configType} config
-   * @returns {resType}
-   */
-  put: async (path, config) => {},
+  post: async (path, config) => await Promise.resolve(resType),
   /**
    *
    * @param {String} path
    * @param {configType} config
    * @returns {resType}
    */
-  delete: async (path, config) => {},
+  put: async (path, config) => await Promise.resolve(resType),
+  /**
+   *
+   * @param {String} path
+   * @param {configType} config
+   * @returns {resType}
+   */
+  delete: async (path, config) => await Promise.resolve(resType),
 };
 // initial fetch
 /**
@@ -56,7 +55,7 @@ const CAN_SEND_METHOD = ['post', 'put', 'delete', 'patch'];
 HTTP_METHOD.forEach(method => {
   // is can send data in opt.body
   const canSend = CAN_SEND_METHOD.includes(method);
-  nextFetch[method] = (
+  nextFetch[method] = async (
     path,
     { data, query, timeout = 10000, headers = {} } = {},
   ) => {

@@ -12,21 +12,16 @@ import {
 } from '../../constants/ActionTypes';
 import { RoleType } from '../../constants/ConstTypes';
 import { Auth } from '../../core/util';
-import logger from './../../core/Logger';
 import router from 'next/router';
 
 export const userLogin = payload => ({ type: USER_LOGIN, payload });
 
 export const userLoginSuccess = (payload = {}) => {
-  logger.log('action', payload);
   const role = RoleType[payload.position];
   Auth.saveAuthToken(payload.token);
   const isAuthenticated = Auth.isAuthenticated;
   const customPayload = { role, isAuthenticated };
-  return {
-    type: USER_LOGIN_SUCCESS,
-    payload: customPayload,
-  };
+  return { type: USER_LOGIN_SUCCESS, payload: customPayload };
 };
 
 export const userLoginFail = () => ({ type: USER_LOGIN_FAIL });
@@ -46,14 +41,23 @@ export const fetchUserListDataSuccess = payload => ({
 
 export const fetchUserListDataFail = () => ({ type: FETCH_USER_LIST_FAIL });
 
-export const fetchUserProfile = (payload = '') => ({
+export const fetchUserProfile = req => ({
   type: FETCH_USER_PROFILE,
-  payload,
+  payload: req,
 });
 
 export const fetchUserProfileFail = () => ({ type: FETCH_USER_PROFILE_FAIL });
 
-export const fetchUserProfileSuccess = payload => ({
-  type: FETCH_USER_PROFILE_SUCCESS,
-  payload,
-});
+export const fetchUserProfileSuccess = payload => {
+  const role = RoleType[payload.position];
+  const customPayload = {
+    username: payload.username,
+    isAuthenticated: true,
+    role,
+  };
+
+  return {
+    type: FETCH_USER_PROFILE_SUCCESS,
+    payload: customPayload,
+  };
+};

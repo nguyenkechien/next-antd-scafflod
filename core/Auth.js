@@ -1,6 +1,9 @@
 import { CookieKey } from '../constants/ConstTypes';
 import logger from './Logger';
-import { getCookies, setCookies, deleteCookies } from './util';
+import { getCookies, setCookies, deleteCookies, isEmptyObj } from './util';
+import nextFetch from './nextFetch';
+import Endpoint from './../constants/ApiUrlForBE';
+import { fetchUserProfileSuccess } from '../redux/actions/user';
 
 export class Auth {
   static info = null;
@@ -41,16 +44,39 @@ export class Auth {
    *
    * @param {NextPageContext} ctx
    */
-  static authOnServer(ctx) {
-    const { req } = ctx;
+  static async authOnServer(ctx) {
+    const { req, store } = ctx;
+    const result = {
+      role: null,
+      token: '',
+      isAuthenticated: false,
+    };
+
     try {
-      const token = this.getAuthTokenOnServer(req);
-      const isAuthenticated = token && token.length > 0;
-      this.isAuthenticated = isAuthenticated;
-      return { isAuthenticated, token };
+      result.token = this.getAuthTokenOnServer(req);
+      if (result.token) {
+        let profile = store.getState().user.auth;
+        result.role = profile.role;
+        if (isEmptyObj(profile)) {
+          const setting = {
+            headers: { Authorization: 'Bearer ' + result.token },
+          };
+          const res = await nextFetch.get(
+            Endpoint.User.getUserProfile,
+            setting,
+          );
+          profile = fetchUserProfileSuccess(res.result);
+          store.dispatch(profile);
+          result.role = profile.payload.role;
+        }
+        result.isAuthenticated = true;
+        this.isAuthenticated = result.isAuthenticated;
+      }
     } catch (error) {
-      logger.error(error);
+      logger.error(`error`, error);
+      this.deleteAuthToken(ctx);
     }
+    return result;
   }
 
   /**

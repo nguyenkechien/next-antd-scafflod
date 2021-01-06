@@ -20,7 +20,7 @@ const getTokenHeader = (req = {}, key = 'authorization') => {
   /**
    * @type {string}
    */
-  const token = req.headers[key];
+  const token = req.headers[key] || 'Bearer ';
   return token ? token.split('Bearer ').join('') : '';
 };
 

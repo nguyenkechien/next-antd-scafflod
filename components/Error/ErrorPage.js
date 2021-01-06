@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 import TemplateErrorPage from './_TemplateErrorPage';
+import { errorStatus } from '../../constants/ConstTypes';
 
 class ErrorPage extends Component {
   static propTypes = {
@@ -10,33 +11,33 @@ class ErrorPage extends Component {
     statusCode: 200,
   };
   render() {
-    let statusCode, src, message;
+    let src,
+      message = `The page is ${errorStatus[this.props.statusCode] ||
+        'not found'}`;
     switch (this.props.statusCode) {
       case 200:
       case 404: {
-        message = 'The page is not found';
         src = '/static/empty.png';
-        statusCode = 404;
         break;
       }
+      case 401:
       case 403: {
-        message = 'The page is forbidden';
-        src = '/static/empty.png';
-        statusCode = 403;
+        src = '/static/unknown_error.png';
         break;
       }
-      case 500: {
+      case 500:
+      default:
         message = 'The page is error';
         src = '/static/unknown_error.png';
-        statusCode = 500;
-        break;
-      }
-      default:
         break;
     }
-    if (!statusCode && !src && !message) return null;
+    if (!src && !message) return null;
     return (
-      <TemplateErrorPage message={message} src={src} statusCode={statusCode} />
+      <TemplateErrorPage
+        message={message}
+        src={src}
+        statusCode={this.props.statusCode}
+      />
     );
   }
 }
