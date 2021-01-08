@@ -37,6 +37,7 @@ class NextApp extends App {
   static async getInitialProps({ Component, ctx, router }) {
     let pageProps = { statusCode: 200 };
     const { pathname, store, isServer } = ctx;
+    if (isServer) store.dispatch(fetchSystemData());
 
     let { isAuthenticated, role } = await Auth.authOnServer(ctx);
     pageProps = { ...pageProps, isAuthenticated };
@@ -45,25 +46,43 @@ class NextApp extends App {
     const routerType = RouterType[route] && RouterType[route].type;
     logger.log('\nroute: ', route, '\nroute type: ', routerType, '\n', router);
 
-    if (isServer) store.dispatch(fetchSystemData());
-
     if (!isAuthenticated && [PRIVATE, PRIVATE_ADMIN].includes(routerType)) {
       this.redirectToLogin(ctx);
       return { pageProps };
     }
 
-    if (
-      isAuthenticated &&
-      (routerType === PUBLIC ||
-        (routerType === PRIVATE_ADMIN && role === RoleType[10]))
-    ) {
+    const isPublicRoute = routerType === PUBLIC;
+
+    const isPrivateAdminRoute =
+      routerType === PRIVATE_ADMIN && role === RoleType[10];
+
+    if (isAuthenticated && (isPublicRoute || isPrivateAdminRoute)) {
       return { pageProps: { ...pageProps, statusCode: 403 } };
     }
 
-    if (Component.getInitialProps) {
-      const initProps = await Component.getInitialProps({ ctx });
-      pageProps = { ...pageProps, ...initProps };
-    }
+    const {
+      getInitialProps,
+      getServersideProps,
+      getStaticProps,
+      getStaticPaths,
+    } = Component;
+
+    const initialProps = getInitialProps && (await getInitialProps({ ctx }));
+
+    const serverSide =
+      getServersideProps && (await getServersideProps({ ctx }));
+
+    const staticProps = getStaticProps && (await getStaticProps({ ctx }));
+
+    const staticPaths = getStaticPaths && (await getStaticPaths({ ctx }));
+
+    pageProps = {
+      ...pageProps,
+      ...serverSide,
+      ...staticProps,
+      ...staticPaths,
+      ...initialProps,
+    };
 
     logger.log(`pageProps`, pageProps);
     return { pageProps };
@@ -91,12 +110,14 @@ class NextApp extends App {
       router: { pathname, route },
     } = this.props;
     const { title, type } = RouterType[pathname] || {};
+    console.log(`store`, store.getState());
+    const meta = store.getState().common.system.meta;
     return (
       <>
         <Head>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <meta charSet="utf-8" />
-          <title>Next-Antd-Scaffold</title>
+          <title>{meta.title || 'Next-Antd-Scaffold'}</title>
           <link
             rel="shortcut icon"
             href="/static/favicon.ico"

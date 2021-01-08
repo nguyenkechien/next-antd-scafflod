@@ -28,6 +28,11 @@ const Systems = {
     return res.json(
       resJson({
         result: {
+          meta: {
+            title: 'Next-Antd-Scaffold-Server',
+            keyword: 'Next-Antd-Scaffold',
+            description: 'Next-Antd-Scaffold',
+          },
           header: RouterType,
         },
       }),

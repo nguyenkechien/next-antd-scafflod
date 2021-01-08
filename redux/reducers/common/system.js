@@ -5,6 +5,7 @@ import {
 } from '../../../constants/ActionTypes';
 
 const initialState = {
+  meta: {},
   header: {},
   footer: [],
 };
