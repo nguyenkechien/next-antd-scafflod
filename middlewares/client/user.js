@@ -12,7 +12,6 @@ import { Auth } from '../../core/Auth';
 
 export default ({ dispatch }) => next => action => {
   const ret = next(action);
-  console.log(`middlewares`, ret);
   switch (action.type) {
     case FETCH_USER_LIST_FAIL:
       message.error('Fetch user list fail');

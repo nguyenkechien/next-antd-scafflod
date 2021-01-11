@@ -6,14 +6,17 @@ import { errorStatus } from '../../constants/ConstTypes';
 class ErrorPage extends Component {
   static propTypes = {
     statusCode: PropTypes.number,
+    message: PropTypes.string,
   };
   static defaultProps = {
     statusCode: 200,
+    message: '',
   };
   render() {
     let src,
-      message = `The page is ${errorStatus[this.props.statusCode] ||
-        'not found'}`;
+      message =
+        this.props.message ||
+        `The page is ${errorStatus[this.props.statusCode] || 'not found'}`;
     switch (this.props.statusCode) {
       case 200:
       case 404: {

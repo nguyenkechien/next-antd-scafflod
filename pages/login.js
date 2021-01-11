@@ -5,4 +5,9 @@ UserLogin.getInitialProps = async props => {
   return { isServer };
 };
 
+UserLogin.getServerSideProps = async context => {
+  console.log(`context`, context);
+  return { props: {} };
+};
+
 export default UserLogin;
