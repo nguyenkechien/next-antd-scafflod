@@ -6,7 +6,6 @@ import Endpoint from './../constants/ApiUrlForBE';
 import { fetchUserProfileSuccess } from '../redux/actions/user';
 
 export class Auth {
-  static info = null;
   static redirectTo = '/login';
   static isAuthenticated = false;
 
@@ -41,6 +40,14 @@ export class Auth {
   }
 
   /**
+   * @param {NextPageContext} ctx from next's getServerSideProps or getInitialProps : Context
+   */
+  static deleteAuthToken(ctx) {
+    this.isAuthenticated = false;
+    deleteCookies(CookieKey.AuthToken, ctx);
+  }
+
+  /**
    *
    * @param {NextPageContext} ctx
    */
@@ -56,7 +63,6 @@ export class Auth {
       result.token = this.getAuthTokenOnServer(req);
       if (result.token) {
         let profile = store.getState().user.auth;
-        result.role = profile.role;
         if (isEmptyObj(profile)) {
           const setting = {
             headers: { Authorization: 'Bearer ' + result.token },
@@ -65,25 +71,18 @@ export class Auth {
             Endpoint.User.getUserProfile,
             setting,
           );
-          profile = fetchUserProfileSuccess(res.result);
-          store.dispatch(profile);
-          result.role = profile.payload.role;
+          const profileRes = fetchUserProfileSuccess(res.result);
+          store.dispatch(profileRes);
+          profile = profileRes.payload;
         }
+        result.role = profile.role;
         result.isAuthenticated = true;
-        this.isAuthenticated = result.isAuthenticated;
+        this.isAuthenticated = true;
       }
     } catch (error) {
       logger.error(`error`, error);
       this.deleteAuthToken(ctx);
     }
     return result;
-  }
-
-  /**
-   * @param {NextPageContext} ctx from next's getServerSideProps or getInitialProps : Context
-   * @returns {String} String Token
-   */
-  static deleteAuthToken(ctx) {
-    return deleteCookies(CookieKey.AuthToken, ctx);
   }
 }

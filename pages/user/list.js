@@ -1,5 +1,5 @@
 import UserList from '../../containers/user/list';
-import { PrivateComponent } from '../../components/PrivateComponent';
+import { withPrivateComponent } from '../../components/PrivateComponent';
 import { fetchUserListData } from '../../redux/actions/user';
 
 UserList.getInitialProps = async props => {
@@ -8,4 +8,4 @@ UserList.getInitialProps = async props => {
   return { isServer };
 };
 
-export default PrivateComponent(UserList);
+export default withPrivateComponent(UserList);

@@ -2,14 +2,25 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 import ErrorPage from './Error/ErrorPage';
 import { redirectToLogin } from '../core/util';
+import {
+  PRIVATE_ADMIN,
+  PUBLIC,
+  RoleType,
+  SHARE,
+} from '../constants/ConstTypes';
 
-export const PrivateComponent = WrappedComponent => {
+export const withPrivateComponent = WrappedComponent => {
   return class extends Component {
     static propTypes = {
-      forbidden: PropTypes.bool,
+      routerType: PropTypes.string,
+      role: PropTypes.string,
       isAuthenticated: PropTypes.bool,
     };
-    static defaultProps = { forbidden: false, isAuthenticated: false };
+    static defaultProps = {
+      routerType: SHARE,
+      role: RoleType[10],
+      isAuthenticated: false,
+    };
 
     // eslint-disable-next-line react/sort-comp
     static async getInitialProps({
@@ -24,22 +35,36 @@ export const PrivateComponent = WrappedComponent => {
         redirectToLogin(ctx);
         return { initialProps, isAuthenticated };
       }
-
       if (WrappedComponent.getInitialProps) {
         const wrappedProps = await WrappedComponent.getInitialProps(
           initialProps,
         );
-        return { ...wrappedProps, isAuthenticated };
+        return { ...wrappedProps, isAuthenticated, routerType, role };
       }
       return initialProps;
     }
 
     render() {
-      const { isAuthenticated, ...propsWithoutAuth } = this.props;
-
-      isAuthenticated && (
-        <ErrorPage statusCode={403} message="Please log out to view the page" />
-      );
+      const {
+        isAuthenticated,
+        routerType,
+        role,
+        ...propsWithoutAuth
+      } = this.props;
+      console.log(PRIVATE_ADMIN, routerType === PRIVATE_ADMIN);
+      console.log(role, role === RoleType[1]);
+      if (
+        isAuthenticated &&
+        (routerType === PUBLIC ||
+          (routerType === PRIVATE_ADMIN && role !== RoleType[1]))
+      ) {
+        return (
+          <ErrorPage
+            statusCode={403}
+            message="Please log out to view the page"
+          />
+        );
+      }
 
       return <WrappedComponent {...propsWithoutAuth} />;
     }

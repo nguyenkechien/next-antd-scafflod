@@ -5,6 +5,7 @@ import { color_primary } from '../constants/CustomTheme';
 import { useState } from 'react';
 import { Menu } from 'antd';
 import styled from 'styled-components';
+
 const {
   publicRuntimeConfig: { staticFolder },
   publicRuntimeConfig,
@@ -15,10 +16,7 @@ const { Item } = Menu;
 const Header = ({ title, nav, userLogout, ...props }) => {
   const [current, setCurrentItem] = useState(props.route);
 
-  const handleClick = e => {
-    console.log(e);
-    setCurrentItem(e.key);
-  };
+  const handleClick = e => setCurrentItem(e.key);
 
   const ListMenu = () => {
     return (

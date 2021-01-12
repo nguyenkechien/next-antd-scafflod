@@ -1,3 +1,4 @@
+import { withPrivateComponent } from '../../components/PrivateComponent';
 import UserDetail from '../../containers/User/detail';
 
 UserDetail.getInitialProps = async props => {
@@ -5,4 +6,4 @@ UserDetail.getInitialProps = async props => {
   return { isServer };
 };
 
-export default UserDetail;
+export default withPrivateComponent(UserDetail);
