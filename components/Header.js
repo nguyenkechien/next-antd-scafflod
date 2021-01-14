@@ -2,10 +2,10 @@ import PropTypes from 'prop-types';
 import Link from 'next/link';
 import getConfig from 'next/config';
 import { color_primary } from '../constants/CustomTheme';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Menu } from 'antd';
 import styled from 'styled-components';
-
+import { useRouter } from 'next/router';
 const {
   publicRuntimeConfig: { staticFolder },
   publicRuntimeConfig,
@@ -16,11 +16,13 @@ const { Item } = Menu;
 const Header = ({ title, nav, userLogout, ...props }) => {
   const [current, setCurrentItem] = useState(props.route);
 
-  const handleClick = e => setCurrentItem(e.key);
+  const router = useRouter();
+
+  useEffect(() => setCurrentItem(router.asPath), [router.asPath]);
 
   const ListMenu = () => {
     return (
-      <Menu onClick={handleClick} selectedKeys={[current]} mode="horizontal">
+      <Menu selectedKeys={[current]} mode="horizontal">
         {nav.map(item => (
           <Item key={item.href.toLowerCase()} hidden={item.hidden}>
             <Link href={item.href}>

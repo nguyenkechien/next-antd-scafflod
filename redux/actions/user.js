@@ -17,11 +17,8 @@ import router from 'next/router';
 export const userLogin = payload => ({ type: USER_LOGIN, payload });
 
 export const userLoginSuccess = (payload = {}) => {
-  const role = RoleType[payload.position];
   Auth.saveAuthToken(payload.token);
-  const isAuthenticated = Auth.isAuthenticated;
-  const customPayload = { role, isAuthenticated };
-  return { type: USER_LOGIN_SUCCESS, payload: customPayload };
+  return { type: USER_LOGIN_SUCCESS };
 };
 
 export const userLoginFail = () => ({ type: USER_LOGIN_FAIL });
@@ -41,10 +38,7 @@ export const fetchUserListDataSuccess = payload => ({
 
 export const fetchUserListDataFail = () => ({ type: FETCH_USER_LIST_FAIL });
 
-export const fetchUserProfile = req => ({
-  type: FETCH_USER_PROFILE,
-  payload: req,
-});
+export const fetchUserProfile = () => ({ type: FETCH_USER_PROFILE });
 
 export const fetchUserProfileFail = () => ({ type: FETCH_USER_PROFILE_FAIL });
 

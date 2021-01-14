@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 import fetch from 'isomorphic-unfetch';
-import { reject } from 'lodash';
 import qs from 'query-string';
 import { Auth } from './Auth';
 import logger from './Logger';
@@ -65,6 +64,7 @@ HTTP_METHOD.forEach(method => {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         Accept: 'application/json',
+        Authorization: 'Bearer ' + Auth.getAuthToken(),
         ...headers,
       },
       credentials: 'include',
@@ -80,7 +80,6 @@ HTTP_METHOD.forEach(method => {
 
     if (canSend && data) {
       opts.body = qs.stringify(filterObject(data, Boolean));
-      opts.headers.Authorization = `Bearer ${Auth.getAuthToken()}`;
     }
 
     logger.info('Request Url:', url);

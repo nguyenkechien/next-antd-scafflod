@@ -15,8 +15,6 @@ import {
 import Endpoint from '../../../constants/ApiUrlForBE';
 import nextFetch from '../../../core/nextFetch';
 import logger from '../../../core/Logger';
-import { Auth } from '../../../core/Auth';
-
 /**
  * userList saga
  */
@@ -40,12 +38,10 @@ export function* userLogin({ payload: data }) {
   }
 }
 
-export function* fetchUserProfile({ payload: req }) {
+export function* fetchUserProfile() {
   try {
-    const config = {
-      headers: { Authorization: 'Bearer ' + Auth.getAuthTokenOnServer(req) },
-    };
-    const res = yield nextFetch.get(Endpoint.User.getUserProfile, config);
+    const res = yield nextFetch.get(Endpoint.User.getUserProfile);
+
     yield put(fetchUserProfileSuccess(res.result));
   } catch (e) {
     logger.error(e);

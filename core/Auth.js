@@ -63,6 +63,7 @@ export class Auth {
       result.token = this.getAuthTokenOnServer(req);
       if (result.token) {
         let profile = store.getState().user.auth;
+        console.log(`isEmptyObj(profile)`, isEmptyObj(profile));
         if (isEmptyObj(profile)) {
           const setting = {
             headers: { Authorization: 'Bearer ' + result.token },
