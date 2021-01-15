@@ -12,3 +12,11 @@ export const fetchSystemDataSuccess = payload => ({
 });
 
 export const fetchSystemDataFail = () => ({ type: FETCH_SYSTEM_FAIL });
+
+/**
+ *
+ * @param {Array<String>} actions
+ */
+export const createLoadingSelector = actions => {
+  return state => actions.some(action => state.common.loading[action]);
+};
