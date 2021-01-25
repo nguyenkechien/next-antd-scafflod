@@ -252,7 +252,9 @@ const fakeToke = {
 
 const User = {
   GetUsers(req, res) {
-    return res.json(resJson({ result: users }));
+    setTimeout(() => {
+      return res.json(resJson({ result: users }));
+    }, 2000);
   },
   SignIn(req, res) {
     if (!req.body) {

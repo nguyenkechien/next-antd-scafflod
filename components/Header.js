@@ -23,16 +23,20 @@ const Header = ({ title, nav, userLogout, ...props }) => {
   const ListMenu = () => {
     return (
       <Menu selectedKeys={[current]} mode="horizontal">
-        {nav.map(item => (
-          <Item key={item.href.toLowerCase()} hidden={item.hidden}>
-            <Link href={item.href}>
-              <a>{item.title}</a>
-            </Link>
+        {nav.map(item =>
+          !item.hidden ? (
+            <Item key={item.href.toLowerCase()}>
+              <Link href={item.href}>
+                <a>{item.title}</a>
+              </Link>
+            </Item>
+          ) : null,
+        )}
+        {props.isAuthenticated && (
+          <Item key="logout" onClick={userLogout}>
+            Logout
           </Item>
-        ))}
-        <Item key="logout" onClick={userLogout} hidden={!props.isAuthenticated}>
-          Logout
-        </Item>
+        )}
       </Menu>
     );
   };

@@ -1,8 +1,8 @@
 import { put, takeEvery } from 'redux-saga/effects';
 import {
-  FETCH_USER_LIST,
-  USER_LOGIN,
-  FETCH_USER_PROFILE,
+  FETCH_USER_LIST_REQUEST,
+  USER_LOGIN_REQUEST,
+  FETCH_USER_PROFILE_REQUEST,
 } from '../../../constants/ActionTypes';
 import {
   fetchUserListDataFail,
@@ -50,7 +50,7 @@ export function* fetchUserProfile() {
 }
 
 export default [
-  takeEvery(USER_LOGIN, userLogin),
-  takeEvery(FETCH_USER_LIST, fetchUserList),
-  takeEvery(FETCH_USER_PROFILE, fetchUserProfile),
+  takeEvery(USER_LOGIN_REQUEST, userLogin),
+  takeEvery(FETCH_USER_LIST_REQUEST, fetchUserList),
+  takeEvery(FETCH_USER_PROFILE_REQUEST, fetchUserProfile),
 ];

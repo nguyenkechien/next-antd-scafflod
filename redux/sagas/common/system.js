@@ -1,5 +1,5 @@
 import { put, takeEvery } from 'redux-saga/effects';
-import { FETCH_SYSTEM } from '../../../constants/ActionTypes';
+import { FETCH_SYSTEM_REQUEST } from '../../../constants/ActionTypes';
 import {
   fetchSystemDataFail,
   fetchSystemDataSuccess,
@@ -18,4 +18,4 @@ export function* fetchSystem() {
   }
 }
 
-export default [takeEvery(FETCH_SYSTEM, fetchSystem)];
+export default [takeEvery(FETCH_SYSTEM_REQUEST, fetchSystem)];

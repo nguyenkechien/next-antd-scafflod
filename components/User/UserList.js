@@ -25,8 +25,9 @@ const columns = [
   },
 ];
 
-const UserList = ({ list }) => (
+const UserList = ({ list, isLoading }) => (
   <Table
+    loading={isLoading}
     style={{ minWidth: '600px' }}
     dataSource={list}
     columns={columns}
@@ -39,4 +40,5 @@ export default UserList;
 
 UserList.propTypes = {
   list: PropTypes.array.isRequired,
+  isLoading: PropTypes.bool.isRequired,
 };

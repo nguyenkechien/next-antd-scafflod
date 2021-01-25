@@ -1,10 +1,10 @@
 import {
-  FETCH_SYSTEM,
+  FETCH_SYSTEM_REQUEST,
   FETCH_SYSTEM_FAIL,
   FETCH_SYSTEM_SUCCESS,
 } from '../../constants/ActionTypes';
 
-export const fetchSystemData = () => ({ type: FETCH_SYSTEM });
+export const fetchSystemData = () => ({ type: FETCH_SYSTEM_REQUEST });
 
 export const fetchSystemDataSuccess = payload => ({
   type: FETCH_SYSTEM_SUCCESS,
@@ -17,6 +17,6 @@ export const fetchSystemDataFail = () => ({ type: FETCH_SYSTEM_FAIL });
  *
  * @param {Array<String>} actions
  */
-export const createLoadingSelector = actions => {
-  return state => actions.some(action => state.common.loading[action]);
+export const createLoadingSelector = actions => state => {
+  return actions.some(action => state.common.loading[action]);
 };
