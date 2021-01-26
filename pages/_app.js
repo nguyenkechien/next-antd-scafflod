@@ -13,7 +13,6 @@ import { color_nprogress } from '../constants/CustomTheme';
 import Router from 'next/router';
 import logger from '../core/Logger';
 import { fetchSystemData } from '../redux/actions/common';
-import Header from '../containers/Header';
 import { Auth } from '../core/Auth';
 
 class NextApp extends App {
@@ -37,7 +36,7 @@ class NextApp extends App {
     const initialProps =
       getInitialProps && (await getInitialProps({ ctx, auth, routerType }));
 
-    const serverSide =
+    const serverProps =
       getServersideProps && (await getServersideProps({ ctx }));
 
     const staticProps = getStaticProps && (await getStaticProps({ ctx }));
@@ -46,7 +45,7 @@ class NextApp extends App {
 
     pageProps = {
       ...pageProps,
-      ...serverSide,
+      ...serverProps,
       ...staticProps,
       ...staticPaths,
       ...initialProps,
@@ -75,7 +74,7 @@ class NextApp extends App {
       pageProps,
       store,
       router,
-      router: { pathname, route },
+      router: { pathname },
     } = this.props;
     const { title } = RouterType[pathname] || {};
     console.log(`store`, store.getState());
@@ -94,8 +93,7 @@ class NextApp extends App {
         </Head>
         <Container>
           <Provider store={store}>
-            <Layout title={title} {...pageProps} route={route}>
-              <Header title={title} {...pageProps} {...router} />
+            <Layout title={title} {...pageProps} {...router}>
               <Component {...pageProps} router={router} />
               <GlobalStyle />
             </Layout>

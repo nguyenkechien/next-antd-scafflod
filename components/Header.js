@@ -2,64 +2,42 @@ import PropTypes from 'prop-types';
 import Link from 'next/link';
 import getConfig from 'next/config';
 import { color_primary } from '../constants/CustomTheme';
-import { useEffect, useState } from 'react';
-import { Menu } from 'antd';
 import styled from 'styled-components';
-import { useRouter } from 'next/router';
+import { Container } from './Container';
+import NavigationBar from './NavigationBar';
+
 const {
   publicRuntimeConfig: { staticFolder },
   publicRuntimeConfig,
 } = getConfig();
 
-const { Item } = Menu;
-
-const Header = ({ title, nav, userLogout, ...props }) => {
-  const [current, setCurrentItem] = useState(props.route);
-
-  const router = useRouter();
-
-  useEffect(() => setCurrentItem(router.asPath), [router.asPath]);
-
-  const ListMenu = () => {
-    return (
-      <Menu selectedKeys={[current]} mode="horizontal">
-        {nav.map(item =>
-          !item.hidden ? (
-            <Item key={item.href.toLowerCase()}>
-              <Link href={item.href}>
-                <a>{item.title}</a>
-              </Link>
-            </Item>
-          ) : null,
-        )}
-        {props.isAuthenticated && (
-          <Item key="logout" onClick={userLogout}>
-            Logout
-          </Item>
-        )}
-      </Menu>
-    );
-  };
-
+const Header = ({ title, listMenu, isAuthenticated, route, userLogout }) => {
   return (
-    <NavigationBar id="header_bar" className="container">
-      <Link href="/">
-        <div className="logo-container">
-          <img className="logo" alt="logo" src={`${staticFolder}/logo.png`} />
-          <span className="sys-name">{title}</span>
+    <HeaderContainer>
+      <HeaderBar id="header_bar" className="container">
+        <Link href="/">
+          <div className="logo-container">
+            <img className="logo" alt="logo" src={`${staticFolder}/logo.png`} />
+            <span className="sys-name">{title}</span>
+          </div>
+        </Link>
+        <div className="menu-container">
+          <NavigationBar
+            listMenu={listMenu}
+            isAuthenticated={isAuthenticated}
+            route={route}
+            logout={userLogout}
+          />
         </div>
-      </Link>
-      <div className="menu-container">
-        <ListMenu />
-      </div>
-    </NavigationBar>
+      </HeaderBar>
+    </HeaderContainer>
   );
 };
 export default Header;
 
 Header.propTypes = {
   title: PropTypes.string,
-  nav: PropTypes.array,
+  listMenu: PropTypes.array,
   isAuthenticated: PropTypes.any,
   route: PropTypes.string.isRequired,
   userLogout: PropTypes.func.isRequired,
@@ -67,21 +45,25 @@ Header.propTypes = {
 
 Header.defaultProps = {
   title: publicRuntimeConfig.title || '',
-  nav: [],
+  listMenu: [],
   isAuthenticated: false,
 };
 
-const NavigationBar = styled.div`
+const HeaderContainer = styled.div`
   position: fixed;
   top: 0;
+  left: 0;
   width: 100%;
   height: 60px;
-  background-color: ${color_primary};
   z-index: 999;
+  background-color: ${color_primary};
+  padding: 0 20px;
+`;
+const HeaderBar = styled(Container)`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 20px;
+  height: 100%;
 
   h1 {
     text-align: center;
@@ -107,26 +89,5 @@ const NavigationBar = styled.div`
   .logo {
     width: 30px;
     height: 30px;
-  }
-  .menu-container {
-    .ant-menu {
-      background-color: ${color_primary};
-      border-bottom: 0;
-      &-item,
-      &-submenu-title {
-        color: #fff !important;
-        border-bottom: 0 !important;
-        &:hover {
-          color: rgba(0, 0, 0, 0.5) !important;
-        }
-        > a {
-          color: inherit !important;
-        }
-        &-selected {
-          color: #000 !important;
-          border-bottom: 2px solid #000 !important;
-        }
-      }
-    }
   }
 `;

@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { Table } from 'antd';
 import Link from 'next/link';
+import { CenterContainer } from './../Container';
 
 const columns = [
   {
@@ -26,14 +27,15 @@ const columns = [
 ];
 
 const UserList = ({ list, isLoading }) => (
-  <Table
-    loading={isLoading}
-    style={{ minWidth: '600px' }}
-    dataSource={list}
-    columns={columns}
-    rowKey="id"
-    bordered
-  />
+  <CenterContainer>
+    <Table
+      loading={isLoading}
+      dataSource={list}
+      columns={columns}
+      rowKey="id"
+      bordered
+    />
+  </CenterContainer>
 );
 
 export default UserList;

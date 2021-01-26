@@ -1,4 +1,4 @@
-// ================= common Part ==================== //
+// ================= Common Part ==================== //
 export const FETCH_SYSTEM = 'FETCH_SYSTEM';
 export const FETCH_SYSTEM_REQUEST = 'FETCH_SYSTEM_REQUEST';
 export const FETCH_SYSTEM_FAIL = 'FETCH_SYSTEM_FAIL';
@@ -10,7 +10,6 @@ export const DECREMENT = 'DECREMENT';
 export const RESET = 'RESET';
 
 // ================= User Part ==================== //
-
 export const FETCH_USER_PROFILE = 'FETCH_USER_PROFILE';
 export const FETCH_USER_PROFILE_REQUEST = 'FETCH_USER_PROFILE_REQUEST';
 export const FETCH_USER_PROFILE_FAIL = 'FETCH_USER_PROFILE_FAIL';
@@ -32,3 +31,5 @@ export const USER_REGISTER_FAIL = 'USER_REGISTER_FAIL';
 export const USER_REGISTER_SUCCESS = 'USER_REGISTER_SUCCESS';
 
 export const USER_LOGOUT = 'USER_LOGOUT';
+
+// ================= Product Part ==================== //

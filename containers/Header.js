@@ -9,7 +9,7 @@ import { FETCH_SYSTEM } from '../constants/ActionTypes';
 const mapStateToProps = state => {
   const header = state.common.system.header;
   const isAuthenticated = state.user.auth.isAuthenticated;
-  const nav = Object.keys(header)
+  const listMenu = Object.keys(header)
     .map(item => header[item])
     .map(item => {
       item.hidden =
@@ -19,7 +19,7 @@ const mapStateToProps = state => {
     });
   const isLoading = createLoadingSelector([FETCH_SYSTEM])(state);
   return {
-    nav,
+    listMenu,
     isAuthenticated,
     isLoading,
   };

@@ -3,9 +3,9 @@ export const RoleType = {
   10: 'User',
 };
 
-export const PUBLIC = 'PUBLIC',
-  PRIVATE = 'PRIVATE',
+export const PRIVATE = 'PRIVATE',
   PRIVATE_ADMIN = 'PRIVATE_ADMIN',
+  PUBLIC = 'PUBLIC',
   SHARE = 'SHARE';
 
 export const RouterType = {
