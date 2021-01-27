@@ -7,14 +7,20 @@ import styled from 'styled-components';
 import { transitionTime } from '../constants/CustomTheme';
 import { Button } from 'antd';
 
-const NavigationBar = ({ listMenu, isAuthenticated, route, logout }) => {
+const NavigationBar = ({
+  listMenu,
+  isAuthenticated,
+  route,
+  logout,
+  collapsed,
+  toogleCollapsed,
+}) => {
   const [current, setCurrentItem] = useState(route);
-  const [collapsed, setCollapsed] = useState(false);
   const router = useRouter();
   useEffect(() => setCurrentItem(router.asPath), [router.asPath]);
   return (
     <NavigationContainer>
-      <Button className="hide-md" onClick={() => setCollapsed(!collapsed)}>
+      <Button className="hide-md" onClick={toogleCollapsed}>
         ==
       </Button>
       <NavigationGroup data-mobile selectKey={current} collapsed={collapsed}>
@@ -46,6 +52,8 @@ NavigationBar.propTypes = {
   route: PropTypes.string.isRequired,
   isAuthenticated: PropTypes.any,
   logout: PropTypes.func.isRequired,
+  toogleCollapsed: PropTypes.func.isRequired,
+  collapsed: PropTypes.bool.isRequired,
 };
 
 NavigationBar.defaultProps = {
@@ -64,22 +72,33 @@ const NavigationGroup = styled.ul`
   align-items: center;
   &[data-mobile] {
     @media screen and (max-width: 992px) {
-    transition: all ${transitionTime};
-     max-width: 100%;
-     position: absolute;
-     top: 60px;
-     right: ${props => (props.collapsed ? 0 : '-300px')};
-     width: 30%;
-     height: calc(100vh - 60px);
-     flex-direction:column;
-     justify-content: flex-start;
-     background-color: #fff;
-     box-shadow: 0 3px 6px -4px rgb(0 0 0 / 12%), 0 6px 16px 0 rgb(0 0 0 / 8%), 0 9px 28px 8px rgb(0 0 0 / 5%);
-     > li {
-       width: auto;
-       margin-left: 0;
-     }
-    }
+      transition: right ${transitionTime};
+      max-width: 100%;
+      position: absolute;
+      top: 60px;
+      right: ${props => (!props.collapsed ? 0 : '-300px')};
+      width: 30%;
+      height: calc(100vh - 60px);
+      flex-direction:column;
+      justify-content: flex-start;
+      background-color: #fff;
+      box-shadow: 0 3px 6px -4px rgb(0 0 0 / 12%), 0 6px 16px 0 rgb(0 0 0 / 8%), 0 9px 28px 8px rgb(0 0 0 / 5%);
+      &::after {
+        content: '';
+        position: absolute;
+        width: ${props => (!props.collapsed ? '100vw' : '0')};
+        transition: width ${transitionTime};
+        height: 100vh;
+        top: 0;
+        right: 0;
+        background-color: rgb(0 0 0 / 12%);
+        z-index: -1;
+      }
+      > li {
+          width: auto;
+          margin-left: 0;
+        }
+      }
     @media screen and (max-width: 600px) {
       width: 50%;
     }

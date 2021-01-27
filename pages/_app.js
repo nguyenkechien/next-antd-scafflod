@@ -11,21 +11,30 @@ import { createGlobalStyle } from 'styled-components';
 import { color_nprogress } from '../constants/CustomTheme';
 import Router from 'next/router';
 import logger from '../core/Logger';
-import { fetchSystemData } from '../redux/actions/common';
+import { closeCollapse, fetchSystemData } from '../redux/actions/common';
 import { Auth } from '../core/Auth';
-// import { RouterType, SHARE } from '../constants/ConstTypes';
+import { PUBLIC, SHARE } from '../constants/ConstTypes';
+import ErrorPage from '../components/Error/ErrorPage';
 
 class NextApp extends App {
   static async getInitialProps({ Component, ctx, router }) {
     let pageProps = {};
     const { pathname, store, isServer } = ctx;
-    if (isServer) store.dispatch(fetchSystemData());
+    if (isServer) await fetchSystemData(store);
 
     const route = pathname;
     logger.log('\nroute: ', route, ',\n', router);
     const auth = await Auth.authOnServer(ctx);
-    const itemMenu = store.getState().common.system.header.menu[route];
-    logger.log(`itemMenu`, itemMenu);
+
+    const state = store.getState();
+    const { type, title } = state.common.system.header.menu[route] || {};
+    const routerType = type || SHARE;
+    pageProps = Object.assign(pageProps, { title });
+
+    if (auth.isAuthenticated && routerType === PUBLIC) {
+      return { pageProps: { ...pageProps, statusCode: 403 } };
+    }
+
     const {
       getInitialProps,
       getServersideProps,
@@ -34,7 +43,7 @@ class NextApp extends App {
     } = Component;
 
     const initialProps =
-      getInitialProps && (await getInitialProps({ ctx, auth, route }));
+      getInitialProps && (await getInitialProps({ ctx, auth, routerType }));
 
     const serverProps =
       getServersideProps && (await getServersideProps({ ctx }));
@@ -51,15 +60,29 @@ class NextApp extends App {
       ...initialProps,
     };
 
-    logger.log(`pageProps`, pageProps);
     return { pageProps };
   }
 
   componentDidMount() {
+    const { store } = this.props;
+
+    const storeCloseCollapse = () => {
+      const state = store.getState();
+      const collapsed = state.common.common.collapsed;
+      !collapsed && store.dispatch(closeCollapse());
+    };
+
     NProgress.configure({ showSpinner: false });
     Router.events.on('routeChangeStart', () => NProgress.start());
-    Router.events.on('routeChangeComplete', () => NProgress.done());
-    Router.events.on('routeChangeError', () => NProgress.done());
+
+    Router.events.on('routeChangeComplete', () => {
+      NProgress.done();
+      storeCloseCollapse();
+    });
+    Router.events.on('routeChangeError', () => {
+      NProgress.done();
+      storeCloseCollapse();
+    });
   }
 
   componentWillUnmount() {
@@ -69,17 +92,10 @@ class NextApp extends App {
   }
 
   render() {
-    const {
-      Component,
-      pageProps,
-      store,
-      router,
-      router: { pathname },
-    } = this.props;
-    console.log(`store`, store.getState());
+    const { Component, pageProps, store, router } = this.props;
+    logger.log(`store`, store.getState());
+    logger.log(`pageProps`, pageProps);
     const meta = store.getState().common.system.meta;
-    const { title } =
-      store.getState().common.system.header.menu[pathname] || {};
     return (
       <>
         <Head>
@@ -94,8 +110,12 @@ class NextApp extends App {
         </Head>
         <Container>
           <Provider store={store}>
-            <Layout title={title} {...pageProps} {...router}>
-              <Component {...pageProps} router={router} />
+            <Layout title={pageProps.title} {...pageProps} {...router}>
+              {pageProps.statusCode ? (
+                <ErrorPage statusCode={pageProps.statusCode} />
+              ) : (
+                <Component {...pageProps} router={router} />
+              )}
               <GlobalStyle />
             </Layout>
           </Provider>

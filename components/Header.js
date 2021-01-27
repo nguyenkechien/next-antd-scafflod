@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import getConfig from 'next/config';
@@ -16,6 +15,8 @@ const Header = ({
   isAuthenticated,
   route,
   userLogout,
+  collapsed,
+  toogleCollapsed,
 }) => {
   return (
     <HeaderContainer>
@@ -30,8 +31,10 @@ const Header = ({
           <NavigationBar
             listMenu={listMenu}
             isAuthenticated={isAuthenticated}
-            route={route}
             logout={userLogout}
+            collapsed={collapsed}
+            toogleCollapsed={toogleCollapsed}
+            route={route}
           />
         </div>
       </HeaderBar>
@@ -47,6 +50,8 @@ Header.propTypes = {
   isAuthenticated: PropTypes.any,
   route: PropTypes.string.isRequired,
   userLogout: PropTypes.func.isRequired,
+  toogleCollapsed: PropTypes.func.isRequired,
+  collapsed: PropTypes.bool.isRequired,
 };
 
 Header.defaultProps = {

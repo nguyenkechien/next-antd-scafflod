@@ -2,9 +2,24 @@ import {
   FETCH_SYSTEM_REQUEST,
   FETCH_SYSTEM_FAIL,
   FETCH_SYSTEM_SUCCESS,
+  COLLAPSE,
+  OPEN_COLLAPSE,
+  CLOSE_COLLAPSE,
 } from '../../constants/ActionTypes';
+import api from './../../constants/ApiUrlForBE';
+import nextFetch from './../../core/nextFetch';
+import logger from './../../core/Logger';
 
-export const fetchSystemData = () => ({ type: FETCH_SYSTEM_REQUEST });
+export const fetchSystemData = async ({ dispatch }) => {
+  dispatch({ type: FETCH_SYSTEM_REQUEST });
+  try {
+    const res = await nextFetch.get(api.System.getAll);
+    dispatch(fetchSystemDataSuccess(res.result));
+  } catch (e) {
+    logger.error(e);
+    dispatch(fetchSystemDataFail());
+  }
+};
 
 export const fetchSystemDataSuccess = payload => ({
   type: FETCH_SYSTEM_SUCCESS,
@@ -20,3 +35,7 @@ export const fetchSystemDataFail = () => ({ type: FETCH_SYSTEM_FAIL });
 export const createLoadingSelector = actions => state => {
   return actions.some(action => state.common.loading[action]);
 };
+
+export const toogleCollapse = () => ({ type: COLLAPSE });
+export const openCollapse = () => ({ type: OPEN_COLLAPSE });
+export const closeCollapse = () => ({ type: CLOSE_COLLAPSE });

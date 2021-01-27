@@ -8,10 +8,11 @@ import {
 import { bindActionCreators } from 'redux';
 import { userLogout } from '../redux/actions/user';
 import Header from '../components/Header';
-import { createLoadingSelector } from '../redux/actions/common';
+import { createLoadingSelector, toogleCollapse } from '../redux/actions/common';
 import { FETCH_SYSTEM } from '../constants/ActionTypes';
 
 const mapStateToProps = state => {
+  const collapsed = state.common.common.collapsed;
   const header = state.common.system.header;
   const auth = state.user.auth;
 
@@ -37,11 +38,13 @@ const mapStateToProps = state => {
     listMenu,
     isAuthenticated,
     isLoading,
+    collapsed,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
   userLogout: bindActionCreators(userLogout, dispatch),
+  toogleCollapsed: bindActionCreators(toogleCollapse, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

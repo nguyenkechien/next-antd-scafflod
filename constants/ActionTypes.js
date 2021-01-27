@@ -3,6 +3,9 @@ export const FETCH_SYSTEM = 'FETCH_SYSTEM';
 export const FETCH_SYSTEM_REQUEST = 'FETCH_SYSTEM_REQUEST';
 export const FETCH_SYSTEM_FAIL = 'FETCH_SYSTEM_FAIL';
 export const FETCH_SYSTEM_SUCCESS = 'FETCH_SYSTEM_SUCCESS';
+export const COLLAPSE = 'COLLAPSE';
+export const OPEN_COLLAPSE = 'OPEN_COLLAPSE';
+export const CLOSE_COLLAPSE = 'CLOSE_COLLAPSE';
 
 // ================= Home Part ==================== //
 export const INCREMENT = 'INCREMENT';

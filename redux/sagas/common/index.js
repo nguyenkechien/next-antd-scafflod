@@ -1,5 +1,3 @@
-import system from './system';
-
-const commonSagas = [...system];
+const commonSagas = [];
 
 export default commonSagas;

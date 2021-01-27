@@ -2,7 +2,6 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { redirectToLogin } from '../core/util';
 import { PRIVATE_ADMIN, RoleType, SHARE } from '../constants/ConstTypes';
-import ErrorPage from './Error/ErrorPage';
 
 export const withPrivateComponent = WrappedComponent => {
   return class extends Component {
@@ -21,39 +20,26 @@ export const withPrivateComponent = WrappedComponent => {
     static async getInitialProps({
       ctx,
       auth: { isAuthenticated, role },
-      route,
+      routerType,
     }) {
-      const itemMenu = ctx.store.getState().common.system.header.menu[route];
-      const routerType = itemMenu ? itemMenu.type : SHARE;
-      const initialProps = { ctx, routerType, isAuthenticated, role };
+      const initialProps = { isAuthenticated, role };
 
-      if (!isAuthenticated) {
-        redirectToLogin(ctx);
-        return initialProps;
-      }
+      if (!isAuthenticated) return redirectToLogin(ctx);
 
       if (routerType === PRIVATE_ADMIN && role !== RoleType[1]) {
-        WrappedComponent.getInitialProps = async () => ({});
-        isAuthenticated = false;
+        return { ...initialProps, statusCode: 401 };
       }
 
       if (WrappedComponent.getInitialProps) {
-        const wrappedProps = await WrappedComponent.getInitialProps(
-          initialProps,
-        );
-        return { ...wrappedProps, isAuthenticated };
+        const wrappedProps = await WrappedComponent.getInitialProps({ ctx });
+        return { ...wrappedProps, ...initialProps };
       }
       return initialProps;
     }
 
     render() {
-      const { isAuthenticated, ...propsWithoutAuth } = this.props;
-
-      return !isAuthenticated ? (
-        <ErrorPage statusCode={401} />
-      ) : (
-        <WrappedComponent {...propsWithoutAuth} />
-      );
+      const { ...propsWithoutAuth } = this.props;
+      return <WrappedComponent {...propsWithoutAuth} />;
     }
   };
 };
