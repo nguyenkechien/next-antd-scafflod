@@ -5,17 +5,17 @@ export default class Error extends React.Component {
   static propTypes = {
     statusCode: PropTypes.number,
   };
+
   static defaultProps = {
     statusCode: 200,
   };
   // eslint-disable-next-line react/sort-comp
-  static getInitialProps({ ctx: res, err }) {
-    console.log(`err`, err);
+  static getInitialProps({ ctx: { res, err } }) {
     const statusCode = res ? res.statusCode : err ? err.statusCode : 500;
     return { statusCode };
   }
 
   render() {
-    return <ErrorPage statusCode={this.props.statusCode || 200} />;
+    return <ErrorPage statusCode={this.props.statusCode} />;
   }
 }

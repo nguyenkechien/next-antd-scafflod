@@ -6,7 +6,8 @@ export const RoleType = {
 export const PRIVATE = 'PRIVATE',
   PRIVATE_ADMIN = 'PRIVATE_ADMIN',
   PUBLIC = 'PUBLIC',
-  SHARE = 'SHARE';
+  SHARE = 'SHARE',
+  StaticFolder = '/static';
 
 export const RouterType = {
   '/': {
@@ -15,16 +16,32 @@ export const RouterType = {
   },
   '/user/list': {
     title: 'User List',
-    type: PRIVATE,
+    type: PRIVATE_ADMIN,
   },
   '/user/detail': {
     title: 'User Detail',
-    type: PRIVATE_ADMIN,
+    type: PRIVATE,
   },
   '/login': {
     title: 'Login',
     type: PUBLIC,
   },
+};
+
+export const SystemsData = {
+  meta: {
+    title: 'Next-Antd-Scaffold-Server',
+    keyword: 'Next-Antd-Scaffold',
+    description: 'Next-Antd-Scaffold',
+  },
+  header: {
+    logo: {
+      src: `${StaticFolder}/logo.png`,
+      alt: 'logo',
+    },
+    menu: RouterType,
+  },
+  footer: [],
 };
 
 export const CookieKey = {

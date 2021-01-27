@@ -4,13 +4,9 @@ import {
   FETCH_SYSTEM_FAIL,
   FETCH_SYSTEM_SUCCESS,
 } from '../../../constants/ActionTypes';
+import { SystemsData } from './../../../constants/ConstTypes';
 
-const initialState = {
-  meta: {},
-  header: {},
-  footer: [],
-};
-
+const initialState = SystemsData;
 const system = (state = initialState, { type, payload }) => {
   switch (type) {
     case FETCH_SYSTEM:

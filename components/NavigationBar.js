@@ -14,7 +14,9 @@ const NavigationBar = ({ listMenu, isAuthenticated, route, logout }) => {
   useEffect(() => setCurrentItem(router.asPath), [router.asPath]);
   return (
     <NavigationContainer>
-      <Button className="hide-md" onClick={() => setCollapsed(!collapsed)}>==</Button>
+      <Button className="hide-md" onClick={() => setCollapsed(!collapsed)}>
+        ==
+      </Button>
       <NavigationGroup data-mobile selectKey={current} collapsed={collapsed}>
         {listMenu.map(
           item =>
@@ -60,12 +62,6 @@ const NavigationGroup = styled.ul`
   display: flex;
   justify-content: space-around;
   align-items: center;
-  [data-key="${props => props.selectKey}"] {
-    color: #000 !important;
-    &::after {
-      transform: translate(-50%, -50%) scale(1);
-    }
-  }
   &[data-mobile] {
     @media screen and (max-width: 992px) {
     transition: all ${transitionTime};
@@ -86,6 +82,14 @@ const NavigationGroup = styled.ul`
     }
     @media screen and (max-width: 600px) {
       width: 50%;
+    }
+  }
+  > li {
+    &[data-key="${props => props.selectKey}"], &:hover {
+      color: #000 !important;
+      &::after {
+        transform: translate(-50%, -50%) scale(1);
+      }
     }
   }
 `;
@@ -110,12 +114,5 @@ const NavigationItem = styled.li`
   > a {
     color: inherit !important;
     display: inline-block;
-  }
-  /* &.selected, */
-  &:hover {
-    color: #000 !important;
-    &::after {
-      transform: translate(-50%, -50%) scale(1);
-    }
   }
 `;

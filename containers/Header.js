@@ -1,5 +1,10 @@
 import { connect } from 'react-redux';
-import { PRIVATE, PUBLIC } from '../constants/ConstTypes';
+import {
+  PRIVATE,
+  PRIVATE_ADMIN,
+  PUBLIC,
+  RoleType,
+} from '../constants/ConstTypes';
 import { bindActionCreators } from 'redux';
 import { userLogout } from '../redux/actions/user';
 import Header from '../components/Header';
@@ -8,17 +13,27 @@ import { FETCH_SYSTEM } from '../constants/ActionTypes';
 
 const mapStateToProps = state => {
   const header = state.common.system.header;
-  const isAuthenticated = state.user.auth.isAuthenticated;
-  const listMenu = Object.keys(header)
-    .map(item => header[item])
+  const auth = state.user.auth;
+
+  const isAuthenticated = auth.isAuthenticated;
+  const role = auth.role;
+
+  const logo = header.logo;
+  const menu = header.menu;
+  const listMenu = Object.keys(menu)
+    .map(item => Object.assign(menu[item], { href: item }))
     .map(item => {
       item.hidden =
-        (item.type === PRIVATE && !isAuthenticated) ||
-        (item.type === PUBLIC && isAuthenticated);
+        (!isAuthenticated && [PRIVATE, PRIVATE_ADMIN].includes(item.type)) ||
+        (isAuthenticated &&
+          (item.type === PUBLIC ||
+            (item.type === PRIVATE_ADMIN && role !== RoleType[1])));
+
       return item;
     });
   const isLoading = createLoadingSelector([FETCH_SYSTEM])(state);
   return {
+    logo,
     listMenu,
     isAuthenticated,
     isLoading,

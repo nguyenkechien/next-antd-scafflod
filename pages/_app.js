@@ -5,7 +5,6 @@ import withRedux from 'next-redux-wrapper';
 import withReduxSaga from 'next-redux-saga';
 import createStore from '../redux/store';
 import Layout from '../layout';
-import { RouterType, SHARE } from '../constants/ConstTypes';
 import '../assets/self-styles.less';
 import NProgress from 'nprogress';
 import { createGlobalStyle } from 'styled-components';
@@ -14,6 +13,7 @@ import Router from 'next/router';
 import logger from '../core/Logger';
 import { fetchSystemData } from '../redux/actions/common';
 import { Auth } from '../core/Auth';
+// import { RouterType, SHARE } from '../constants/ConstTypes';
 
 class NextApp extends App {
   static async getInitialProps({ Component, ctx, router }) {
@@ -22,10 +22,10 @@ class NextApp extends App {
     if (isServer) store.dispatch(fetchSystemData());
 
     const route = pathname;
-    logger.log('\nroute: ', route, '\n', router);
-
-    const routerType = (RouterType[route] && RouterType[route].type) || SHARE;
+    logger.log('\nroute: ', route, ',\n', router);
     const auth = await Auth.authOnServer(ctx);
+    const itemMenu = store.getState().common.system.header.menu[route];
+    logger.log(`itemMenu`, itemMenu);
     const {
       getInitialProps,
       getServersideProps,
@@ -34,7 +34,7 @@ class NextApp extends App {
     } = Component;
 
     const initialProps =
-      getInitialProps && (await getInitialProps({ ctx, auth, routerType }));
+      getInitialProps && (await getInitialProps({ ctx, auth, route }));
 
     const serverProps =
       getServersideProps && (await getServersideProps({ ctx }));
@@ -76,9 +76,10 @@ class NextApp extends App {
       router,
       router: { pathname },
     } = this.props;
-    const { title } = RouterType[pathname] || {};
     console.log(`store`, store.getState());
     const meta = store.getState().common.system.meta;
+    const { title } =
+      store.getState().common.system.header.menu[pathname] || {};
     return (
       <>
         <Head>

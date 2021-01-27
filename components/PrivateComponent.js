@@ -1,13 +1,8 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import ErrorPage from './Error/ErrorPage';
 import { redirectToLogin } from '../core/util';
-import {
-  PRIVATE_ADMIN,
-  PUBLIC,
-  RoleType,
-  SHARE,
-} from '../constants/ConstTypes';
+import { PRIVATE_ADMIN, RoleType, SHARE } from '../constants/ConstTypes';
+import ErrorPage from './Error/ErrorPage';
 
 export const withPrivateComponent = WrappedComponent => {
   return class extends Component {
@@ -26,47 +21,39 @@ export const withPrivateComponent = WrappedComponent => {
     static async getInitialProps({
       ctx,
       auth: { isAuthenticated, role },
-      routerType,
+      route,
     }) {
-      const initialProps = { ctx };
-      console.log('routerType', routerType);
-      console.log('role', role);
+      const itemMenu = ctx.store.getState().common.system.header.menu[route];
+      const routerType = itemMenu ? itemMenu.type : SHARE;
+      const initialProps = { ctx, routerType, isAuthenticated, role };
+
       if (!isAuthenticated) {
         redirectToLogin(ctx);
-        return { initialProps, isAuthenticated };
+        return initialProps;
       }
+
+      if (routerType === PRIVATE_ADMIN && role !== RoleType[1]) {
+        WrappedComponent.getInitialProps = async () => ({});
+        isAuthenticated = false;
+      }
+
       if (WrappedComponent.getInitialProps) {
         const wrappedProps = await WrappedComponent.getInitialProps(
           initialProps,
         );
-        return { ...wrappedProps, isAuthenticated, routerType, role };
+        return { ...wrappedProps, isAuthenticated };
       }
       return initialProps;
     }
 
     render() {
-      const {
-        isAuthenticated,
-        routerType,
-        role,
-        ...propsWithoutAuth
-      } = this.props;
-      console.log(PRIVATE_ADMIN, routerType === PRIVATE_ADMIN);
-      console.log(role, role === RoleType[1]);
-      if (
-        isAuthenticated &&
-        (routerType === PUBLIC ||
-          (routerType === PRIVATE_ADMIN && role !== RoleType[1]))
-      ) {
-        return (
-          <ErrorPage
-            statusCode={403}
-            message="Please log out to view the page"
-          />
-        );
-      }
+      const { isAuthenticated, ...propsWithoutAuth } = this.props;
 
-      return <WrappedComponent {...propsWithoutAuth} />;
+      return !isAuthenticated ? (
+        <ErrorPage statusCode={401} />
+      ) : (
+        <WrappedComponent {...propsWithoutAuth} />
+      );
     }
   };
 };

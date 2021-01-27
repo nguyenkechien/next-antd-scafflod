@@ -23,8 +23,13 @@ class ErrorPage extends Component {
         src = '/static/empty.png';
         break;
       }
-      case 401:
+      case 401: {
+        src = '/static/unknown_error.png';
+        message = 'You do not have permission to access the site';
+        break;
+      }
       case 403: {
+        message = 'Please log out to view the page';
         src = '/static/unknown_error.png';
         break;
       }

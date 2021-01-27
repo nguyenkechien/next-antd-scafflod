@@ -113,7 +113,6 @@ module.exports = withLess({
   },
   publicRuntimeConfig: {
     // Will be available on both server and client
-    staticFolder: '/static',
     isDev, // Pass through env variables
     API_SERVER: isDev ? 'http://localhost:3006/api' : '/api',
     title: 'Next-Antd-Scaffold',

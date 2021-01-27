@@ -72,5 +72,13 @@ export const redirectToLogin = ctx => {
   }
 };
 
+export const redirectTo = (ctx, url) => {
+  const { res } = ctx;
+  if (res) {
+    res.writeHead(302, { Location: url });
+    res.end();
+  } else Router.push(url);
+};
+
 export * from './Cookie';
 export * from './Auth';

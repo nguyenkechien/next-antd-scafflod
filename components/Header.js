@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import getConfig from 'next/config';
@@ -6,18 +7,22 @@ import styled from 'styled-components';
 import { Container } from './Container';
 import NavigationBar from './NavigationBar';
 
-const {
-  publicRuntimeConfig: { staticFolder },
-  publicRuntimeConfig,
-} = getConfig();
+const { publicRuntimeConfig } = getConfig();
 
-const Header = ({ title, listMenu, isAuthenticated, route, userLogout }) => {
+const Header = ({
+  logo,
+  title,
+  listMenu,
+  isAuthenticated,
+  route,
+  userLogout,
+}) => {
   return (
     <HeaderContainer>
       <HeaderBar id="header_bar" className="container">
         <Link href="/">
           <div className="logo-container">
-            <img className="logo" alt="logo" src={`${staticFolder}/logo.png`} />
+            <img className="logo" alt={logo.alt} src={logo.src} />
             <span className="sys-name">{title}</span>
           </div>
         </Link>
@@ -36,6 +41,7 @@ const Header = ({ title, listMenu, isAuthenticated, route, userLogout }) => {
 export default Header;
 
 Header.propTypes = {
+  logo: PropTypes.object,
   title: PropTypes.string,
   listMenu: PropTypes.array,
   isAuthenticated: PropTypes.any,
@@ -46,6 +52,10 @@ Header.propTypes = {
 Header.defaultProps = {
   title: publicRuntimeConfig.title || '',
   listMenu: [],
+  logo: {
+    src: '',
+    alt: '',
+  },
   isAuthenticated: false,
 };
 

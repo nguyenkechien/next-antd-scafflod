@@ -10,3 +10,17 @@ body {
   position: relative;
   background-color: #f4f4f5;
 }
+
+.hide {
+  &-md {
+    display: none !important;
+  }
+  @media (max-width: @screen-lg) {
+    &-md {
+      display: block !important;
+    }
+    &-sm {
+      display: none !important;
+    }
+  }
+}
