@@ -1,28 +1,33 @@
-/* eslint-disable no-unused-vars */
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { transitionTime } from '../constants/CustomTheme';
-import { Button } from 'antd';
 
 const NavigationBar = ({
   listMenu,
   isAuthenticated,
   route,
-  logout,
+  userLogout,
   collapsed,
   toogleCollapsed,
 }) => {
   const [current, setCurrentItem] = useState(route);
   const router = useRouter();
   useEffect(() => setCurrentItem(router.asPath), [router.asPath]);
+
   return (
     <NavigationContainer>
-      <Button className="hide-md" onClick={toogleCollapsed}>
-        ==
-      </Button>
+      <HambergerIcon
+        className="hide-md"
+        collapsed={collapsed}
+        onClick={toogleCollapsed}
+      >
+        {[1, 2, 3, 4].map(k => (
+          <span key={k} className={`line line-${k}`}></span>
+        ))}
+      </HambergerIcon>
       <NavigationGroup data-mobile selectKey={current} collapsed={collapsed}>
         {listMenu.map(
           item =>
@@ -38,7 +43,7 @@ const NavigationBar = ({
             ),
         )}
         {isAuthenticated && (
-          <NavigationItem onClick={() => logout()}>Logout</NavigationItem>
+          <NavigationItem onClick={() => userLogout()}>Logout</NavigationItem>
         )}
       </NavigationGroup>
     </NavigationContainer>
@@ -51,7 +56,7 @@ NavigationBar.propTypes = {
   listMenu: PropTypes.array,
   route: PropTypes.string.isRequired,
   isAuthenticated: PropTypes.any,
-  logout: PropTypes.func.isRequired,
+  userLogout: PropTypes.func.isRequired,
   toogleCollapsed: PropTypes.func.isRequired,
   collapsed: PropTypes.bool.isRequired,
 };
@@ -85,9 +90,10 @@ const NavigationGroup = styled.ul`
       box-shadow: 0 3px 6px -4px rgb(0 0 0 / 12%), 0 6px 16px 0 rgb(0 0 0 / 8%), 0 9px 28px 8px rgb(0 0 0 / 5%);
       &::after {
         content: '';
-        position: absolute;
-        width: ${props => (!props.collapsed ? '100vw' : '0')};
-        transition: width ${transitionTime};
+        position: fixed;
+        width: ${props => (!props.collapsed ? '100%' : '0')};
+        opacity: ${props => (!props.collapsed ? 1 : 0)};
+        transition: opacity ${transitionTime};
         height: 100vh;
         top: 0;
         right: 0;
@@ -95,8 +101,12 @@ const NavigationGroup = styled.ul`
         z-index: -1;
       }
       > li {
-          width: auto;
+          width: 100%;
           margin-left: 0;
+          a {
+            display: inline-block;
+            width: 100%;
+          }
         }
       }
     @media screen and (max-width: 600px) {
@@ -127,11 +137,55 @@ const NavigationItem = styled.li`
     position: absolute;
     bottom: 0;
     left: 50%;
-    height: 2px;
+    height: 1.5px;
     background-color: #000;
   }
   > a {
     color: inherit !important;
     display: inline-block;
+  }
+`;
+
+const HambergerIcon = styled.button`
+  background-color: transparent;
+  border-radius: 0;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  color: #fff;
+  font-size: 14px;
+  width: 30px;
+  height: 25px;
+  position: relative;
+  .line {
+    height: 2px;
+    background-color: #fff;
+    display: block;
+    position: absolute;
+    right: 0;
+    transition: right ${transitionTime} ease-in-out;
+    transform: translateX(0);
+    width: 100%;
+    &-1 {
+      top: 0;
+      width: 50%;
+      right: ${props => (!props.collapsed ? '50%' : '0')};
+      transition-delay: 0.1s;
+    }
+    &-2 {
+      top: 30%;
+      width: 80%;
+      right: ${props => (!props.collapsed ? '20%' : '0')};
+      transition-delay: 0.2s;
+    }
+    &-3 {
+      top: 60%;
+      width: 60%;
+      right: ${props => (!props.collapsed ? '40%' : '0')};
+      transition-delay: 0.3s;
+    }
+    &-4 {
+      top: 90%;
+    }
   }
 `;

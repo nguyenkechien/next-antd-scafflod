@@ -4,20 +4,11 @@ import getConfig from 'next/config';
 import { color_primary } from '../constants/CustomTheme';
 import styled from 'styled-components';
 import { Container } from './Container';
-import NavigationBar from './NavigationBar';
+import NavigationBar from '../containers/NavigationBar';
 
 const { publicRuntimeConfig } = getConfig();
 
-const Header = ({
-  logo,
-  title,
-  listMenu,
-  isAuthenticated,
-  route,
-  userLogout,
-  collapsed,
-  toogleCollapsed,
-}) => {
+const Header = ({ logo, title, route }) => {
   return (
     <HeaderContainer>
       <HeaderBar id="header_bar" className="container">
@@ -28,14 +19,7 @@ const Header = ({
           </div>
         </Link>
         <div className="menu-container">
-          <NavigationBar
-            listMenu={listMenu}
-            isAuthenticated={isAuthenticated}
-            logout={userLogout}
-            collapsed={collapsed}
-            toogleCollapsed={toogleCollapsed}
-            route={route}
-          />
+          <NavigationBar route={route} />
         </div>
       </HeaderBar>
     </HeaderContainer>
@@ -46,22 +30,15 @@ export default Header;
 Header.propTypes = {
   logo: PropTypes.object,
   title: PropTypes.string,
-  listMenu: PropTypes.array,
-  isAuthenticated: PropTypes.any,
   route: PropTypes.string.isRequired,
-  userLogout: PropTypes.func.isRequired,
-  toogleCollapsed: PropTypes.func.isRequired,
-  collapsed: PropTypes.bool.isRequired,
 };
 
 Header.defaultProps = {
   title: publicRuntimeConfig.title || '',
-  listMenu: [],
   logo: {
     src: '',
     alt: '',
   },
-  isAuthenticated: false,
 };
 
 const HeaderContainer = styled.div`

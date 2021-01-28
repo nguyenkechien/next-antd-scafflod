@@ -6,43 +6,43 @@ import logger from './Logger';
 import { filterObject } from './util';
 import { resType } from './utilServer';
 
-export const configType = {
+export const ConfigType = {
   data: Object,
   query: Object,
   timeout: Number,
   headers: Object,
 };
-export const methodsType = {
+export const MethodsType = {
   /**
    *
    * @param {String} path
-   * @param {configType} config
+   * @param {ConfigType} config
    */
   get: async (path, config) => await Promise.resolve(resType),
   /**
    *
    * @param {String} path
-   * @param {configType} config
+   * @param {ConfigType} config
    */
   post: async (path, config) => await Promise.resolve(resType),
   /**
    *
    * @param {String} path
-   * @param {configType} config
+   * @param {ConfigType} config
    * @returns {resType}
    */
   put: async (path, config) => await Promise.resolve(resType),
   /**
    *
    * @param {String} path
-   * @param {configType} config
+   * @param {ConfigType} config
    * @returns {resType}
    */
   delete: async (path, config) => await Promise.resolve(resType),
 };
 // initial fetch
 /**
- * @type {methodsType}
+ * @type {MethodsType}
  */
 const nextFetch = Object.create(null);
 // browser support methods

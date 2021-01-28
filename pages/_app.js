@@ -73,16 +73,13 @@ class NextApp extends App {
     };
 
     NProgress.configure({ showSpinner: false });
-    Router.events.on('routeChangeStart', () => NProgress.start());
+    Router.events.on('routeChangeStart', () => {
+      storeCloseCollapse();
+      NProgress.start();
+    });
 
-    Router.events.on('routeChangeComplete', () => {
-      NProgress.done();
-      storeCloseCollapse();
-    });
-    Router.events.on('routeChangeError', () => {
-      NProgress.done();
-      storeCloseCollapse();
-    });
+    Router.events.on('routeChangeComplete', () => NProgress.done());
+    Router.events.on('routeChangeError', () => NProgress.done());
   }
 
   componentWillUnmount() {
