@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import getConfig from 'next/config';
-import { color_primary } from '../constants/CustomTheme';
+import { color_primary, height_menu } from '../constants/CustomTheme';
 import styled from 'styled-components';
 import { Container } from './Container';
 import NavigationBar from '../containers/NavigationBar';
@@ -46,7 +46,7 @@ const HeaderContainer = styled.div`
   top: 0;
   left: 0;
   width: 100%;
-  height: 60px;
+  height: calc(${height_menu} - 10px);
   z-index: 999;
   background-color: ${color_primary};
   padding: 0 20px;
@@ -59,7 +59,7 @@ const HeaderBar = styled(Container)`
 
   h1 {
     text-align: center;
-    line-height: 60px;
+    line-height: calc(${height_menu} - 10px);;
     font-size: 1.6rem;
     font-weight: 500;
     color: #fff;

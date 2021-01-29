@@ -60,3 +60,11 @@ export const errorStatus = {
   408: 'Request Timeout',
   500: 'Server Error',
 };
+
+export const InputFieldType = {
+  TEXT: 'text',
+  PASSWORD: 'password',
+  CHECKBOX: 'checkbox',
+  RADIO: 'Radio',
+  SWITCH: 'switch',
+};

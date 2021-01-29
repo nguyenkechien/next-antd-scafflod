@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { height_menu } from '../constants/CustomTheme';
 
 export const Container = props => (
   <StyledContainer {...props}>{props.children}</StyledContainer>
@@ -11,6 +12,9 @@ export const ContentContainer = props => (
 
 export const CenterContainer = props => (
   <StyledCenterContainer>{props.children}</StyledCenterContainer>
+);
+export const CenterPage = props => (
+  <StyledCenterPage>{props.children}</StyledCenterPage>
 );
 
 export const StyledContainer = styled.div`
@@ -26,8 +30,8 @@ export const StyledContainer = styled.div`
 export const StyledContentContainer = styled.div`
   position: relative;
   width: 100%;
-  min-height: calc(100vh - 70px - 150px);
-  margin: 70px 0 20px;
+  min-height: calc(100vh - ${height_menu} - 150px);
+  margin: ${height_menu} 0 20px;
   padding: 10px 20px;
   background-color: #fff;
   overflow-x: hidden;
@@ -39,6 +43,12 @@ export const StyledCenterContainer = styled(Container)`
   align-items: center;
 `;
 
+export const StyledCenterPage = styled(StyledCenterContainer)`
+  min-height: calc(100vh - ${height_menu} - 150px);
+  justify-content: center;
+`;
+
 Container.propTypes = { children: PropTypes.any.isRequired };
 ContentContainer.propTypes = { children: PropTypes.any.isRequired };
 CenterContainer.propTypes = { children: PropTypes.any.isRequired };
+CenterPage.propTypes = { children: PropTypes.any.isRequired };
