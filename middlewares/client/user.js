@@ -9,6 +9,8 @@ import {
 import Router from 'next/router';
 import { fetchUserProfile } from '../../redux/actions/user';
 import { Auth } from '../../core/Auth';
+import { stopSubmit } from '../../redux/actions/common';
+import { FormID } from '../../constants/ConstTypes';
 
 export default ({ dispatch }) => next => action => {
   const ret = next(action);
@@ -21,6 +23,7 @@ export default ({ dispatch }) => next => action => {
       break;
     case USER_LOGIN_SUCCESS: {
       dispatch(fetchUserProfile());
+      dispatch(stopSubmit(FormID.login));
       const next = Router.query ? Router.query.next : '';
       const redirect = next || '/';
       Router.push(redirect);

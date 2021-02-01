@@ -3,12 +3,15 @@ import PropTypes from 'prop-types';
 import { Form, Input, Button, Checkbox } from 'antd';
 import { CenterPage } from '../Container';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import FormSubmit from '../Form';
+import FormSubmit from '../../containers/Form';
+import { FormID } from '../../constants/ConstTypes';
 
 export const propsType = {
   router: PropTypes.object.isRequired,
   userLogin: PropTypes.func.isRequired,
+  submiting: PropTypes.bool.isRequired,
 };
+
 /**
  *
  * @param {propsType} props
@@ -17,7 +20,7 @@ const UserLogin = props => {
   return (
     <CenterPage>
       <FormSubmit
-        name="login"
+        name={FormID.login}
         onFinish={props.userLogin}
         onChange={fields => {
           console.log(`fields`, fields);
@@ -57,8 +60,9 @@ const UserLogin = props => {
             type="primary"
             htmlType="submit"
             className="login-form-button"
+            loading={props.submiting}
           >
-            Log in
+            {props.submiting ? 'Logging in' : 'Log in'}
           </Button>
           Or <a href="">register now!</a>
         </Form.Item>

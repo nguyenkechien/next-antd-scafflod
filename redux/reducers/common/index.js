@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import system from './system';
 import loading from './loading';
+import form from './form';
 import {
   COLLAPSE,
   CLOSE_COLLAPSE,
@@ -25,4 +26,5 @@ export default combineReducers({
   common,
   system,
   loading,
+  form,
 });

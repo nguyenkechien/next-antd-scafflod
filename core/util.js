@@ -39,9 +39,12 @@ export const removeProperty = (obj, property) => {
   }, {});
 };
 
+/**
+ *
+ * @param {String} string String Boolean
+ */
 export const stringToBoolean = string => {
-  if (string === null || string === '') return false;
-
+  if (string === undefined || string === null || string === '') return false;
   switch (string.toLowerCase().trim()) {
     case 'true':
     case 'yes':
@@ -50,7 +53,8 @@ export const stringToBoolean = string => {
     case 'false':
     case 'no':
     case '0':
-    case null:
+    case 'undefined':
+    case 'null':
       return false;
     default:
       return Boolean(string);
@@ -79,7 +83,6 @@ export const redirectTo = (ctx, url) => {
     res.end();
   } else Router.push(url);
 };
-
 
 export * from './Cookie';
 export * from './Auth';

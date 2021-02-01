@@ -275,16 +275,18 @@ const User = {
     if (!userRole) {
       return res.json(resJson({ status: 404, message: `Can't find account` }));
     }
-    return res.json(
-      resJson({
-        status: 200,
-        message: `Login Success`,
-        result: {
-          token: fakeToke[RoleType[userRole].username],
-          position: userRole,
-        },
-      }),
-    );
+    setTimeout(() => {
+      return res.json(
+        resJson({
+          status: 200,
+          message: `Login Success`,
+          result: {
+            token: fakeToke[RoleType[userRole].username],
+            position: userRole,
+          },
+        }),
+      );
+    }, 3000);
   },
   GetProfile(req, res) {
     const tokenClient = getTokenHeader(req);

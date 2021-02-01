@@ -1,7 +1,6 @@
 // ================= Common Part ==================== //
-export const FORM_SUBMIT = 'FORM_SUBMIT';
-export const FORM_SUBMIT_FAIL = 'FORM_SUBMIT_FAIL';
-export const FORM_SUBMIT_SUCCESS = 'FORM_SUBMIT_SUCCESS';
+export const FORM_SUBMIT_START = 'FORM_SUBMIT_START';
+export const FORM_SUBMIT_STOP = 'FORM_SUBMIT_STOP';
 
 export const FETCH_SYSTEM = 'FETCH_SYSTEM';
 export const FETCH_SYSTEM_REQUEST = 'FETCH_SYSTEM_REQUEST';

@@ -68,3 +68,7 @@ export const InputFieldType = {
   RADIO: 'Radio',
   SWITCH: 'switch',
 };
+
+export const FormID = {
+  login: 'login',
+};

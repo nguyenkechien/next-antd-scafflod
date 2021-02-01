@@ -5,6 +5,8 @@ import {
   COLLAPSE,
   OPEN_COLLAPSE,
   CLOSE_COLLAPSE,
+  FORM_SUBMIT_START,
+  FORM_SUBMIT_STOP,
 } from '../../constants/ActionTypes';
 import api from './../../constants/ApiUrlForBE';
 import nextFetch from './../../core/nextFetch';
@@ -39,3 +41,15 @@ export const createLoadingSelector = actions => state => {
 export const toogleCollapse = () => ({ type: COLLAPSE });
 export const openCollapse = () => ({ type: OPEN_COLLAPSE });
 export const closeCollapse = () => ({ type: CLOSE_COLLAPSE });
+
+/**
+ *
+ * @param {String} payload  Form ID
+ */
+export const startSubmit = payload => ({ type: FORM_SUBMIT_START, payload });
+
+/**
+ *
+ * @param {String} payload  Form ID
+ */
+export const stopSubmit = payload => ({ type: FORM_SUBMIT_STOP, payload });
