@@ -1,84 +1,39 @@
-import { Button, Checkbox, Form, Radio, Switch } from 'antd';
+import { Form } from 'antd';
 import PropTypes from 'prop-types';
-import { InputFieldType } from '../../constants/ConstTypes';
-import logger from '../../core/Logger';
-import InputField from './InputField';
+import { useEffect } from 'react';
 
-const FormModule = ({ fields, children, onChange, name, ...props }) => {
-  const renderField = ({ type, prefix, placeholder }) => {
-    switch (type) {
-      case InputFieldType.SWITCH:
-        return (
-          <>
-            <Switch />
-            <span>{placeholder}</span>
-          </>
-        );
-      case InputFieldType.RADIO:
-        return <Radio>{placeholder}</Radio>;
-      case InputFieldType.CHECKBOX:
-        return <Checkbox>{placeholder}</Checkbox>;
-      default:
-        return (
-          <InputField prefix={prefix} placeholder={placeholder} type={type} />
-        );
-    }
-  };
-
-  const renderFields = (
-    { type, prefix, placeholder, name, rules, ...field },
-    index,
-  ) => {
-    logger.log(`field`, field);
-
-    return (
-      <Form.Item key={index} name={name} rules={rules} {...field}>
-        {renderField({ type, prefix, placeholder })}
-      </Form.Item>
-    );
-  };
+const FormSubmit = ({ children, onFinish, onChange, name, ...props }) => {
+  const [form] = Form.useForm();
+  useEffect(() => {
+    console.log(form);
+  }, []);
 
   return (
     <Form
+      form={form}
       name={name}
-      fields={fields}
       onFieldsChange={(_, allFields) => onChange(allFields)}
+      onFinish={values => {
+        onFinish({ formId: name, values });
+      }}
       {...props}
     >
-      {children ? (
-        children
-      ) : (
-        <>
-          {fields.map(renderFields)}
-          <br />
-          <br />
-          <Form.Item>
-            <Button type="primary" htmlType="submit" className="form-button">
-              Submit
-            </Button>
-          </Form.Item>
-        </>
-      )}
+      {children}
     </Form>
   );
 };
 
-FormModule.propTypes = {
+FormSubmit.propTypes = {
   name: PropTypes.string.isRequired,
-  fields: PropTypes.arrayOf(
-    PropTypes.shape({
-      value: PropTypes.any,
-      errors: PropTypes.arrayOf(PropTypes.string),
-      name: PropTypes.any,
-    }),
-  ).isRequired,
   children: PropTypes.any,
   onChange: PropTypes.func,
+  onFinish: PropTypes.func,
 };
 
-FormModule.defaultProps = {
+FormSubmit.defaultProps = {
   onChange: () => {},
+  onFinish: () => {},
   children: null,
 };
 
-export default FormModule;
+export default FormSubmit;

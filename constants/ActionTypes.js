@@ -1,4 +1,8 @@
 // ================= Common Part ==================== //
+export const FORM_SUBMIT = 'FORM_SUBMIT';
+export const FORM_SUBMIT_FAIL = 'FORM_SUBMIT_FAIL';
+export const FORM_SUBMIT_SUCCESS = 'FORM_SUBMIT_SUCCESS';
+
 export const FETCH_SYSTEM = 'FETCH_SYSTEM';
 export const FETCH_SYSTEM_REQUEST = 'FETCH_SYSTEM_REQUEST';
 export const FETCH_SYSTEM_FAIL = 'FETCH_SYSTEM_FAIL';
@@ -34,5 +38,4 @@ export const USER_REGISTER_FAIL = 'USER_REGISTER_FAIL';
 export const USER_REGISTER_SUCCESS = 'USER_REGISTER_SUCCESS';
 
 export const USER_LOGOUT = 'USER_LOGOUT';
-
 // ================= Product Part ==================== //

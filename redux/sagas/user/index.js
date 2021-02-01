@@ -30,7 +30,10 @@ export function* fetchUserList() {
 
 export function* userLogin({ payload: data }) {
   try {
-    const res = yield nextFetch.post(Endpoint.User.login, { data });
+    console.log(data);
+    const res = yield nextFetch.post(Endpoint.User.login, {
+      data: data.values,
+    });
     yield put(userLoginSuccess(res.result));
   } catch (e) {
     logger.error(e);

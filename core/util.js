@@ -80,12 +80,6 @@ export const redirectTo = (ctx, url) => {
   } else Router.push(url);
 };
 
-export const handleErrorToBE = message => ({
-  validator() {
-    if (!message) return Promise.resolve();
-    return Promise.reject(message);
-  },
-});
 
 export * from './Cookie';
 export * from './Auth';

@@ -21,10 +21,10 @@ class NextApp extends App {
     let pageProps = {};
     const { pathname, store, isServer } = ctx;
     if (isServer) await fetchSystemData(store);
+    const auth = await Auth.authOnServer(ctx);
 
     const route = pathname;
     logger.log('\nroute: ', route, ',\n', router);
-    const auth = await Auth.authOnServer(ctx);
 
     const state = store.getState();
     const { type, title } = state.common.system.header.menu[route] || {};
