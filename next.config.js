@@ -116,6 +116,7 @@ module.exports = withLess({
     isDev, // Pass through env variables
     API_SERVER: isDev ? 'http://localhost:3006/api' : '/api',
     title: 'Next-Antd-Scaffold',
+    Strapi_API: isDev ? 'http://localhost:1337' : '',
   },
   env: {
     SERVER_HOST: 'http://localhost:1336',

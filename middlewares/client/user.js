@@ -19,11 +19,12 @@ export default ({ dispatch }) => next => action => {
       message.error('Fetch user list fail');
       break;
     case USER_LOGIN_FAIL:
+      dispatch(stopSubmit(FormID.login));
       message.error('Login fail');
       break;
     case USER_LOGIN_SUCCESS: {
-      dispatch(fetchUserProfile());
       dispatch(stopSubmit(FormID.login));
+      dispatch(fetchUserProfile());
       const next = Router.query ? Router.query.next : '';
       const redirect = next || '/';
       Router.push(redirect);

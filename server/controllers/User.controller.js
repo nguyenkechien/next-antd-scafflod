@@ -235,14 +235,22 @@ const users = [
 ];
 
 const RoleType = {
-  1: {
-    username: 'admin',
-    password: 'admin',
-  },
-  10: {
-    username: 'user',
-    password: 'user',
-  },
+  1: [
+    {
+      username: 'admin',
+      password: 'admin',
+    },
+    {
+      username: 'admin2',
+      password: 'admin',
+    },
+  ],
+  10: [
+    {
+      username: 'user',
+      password: 'user',
+    },
+  ],
 };
 
 const fakeToke = {

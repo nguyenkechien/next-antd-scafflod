@@ -12,6 +12,12 @@ export const propsType = {
   submiting: PropTypes.bool.isRequired,
 };
 
+const initialValues = {
+  username: '',
+  password: '',
+  remember: false,
+};
+
 /**
  *
  * @param {propsType} props
@@ -21,11 +27,9 @@ const UserLogin = props => {
     <CenterPage>
       <h1>Login Next.js</h1>
       <FormSubmit
+        initialValues={initialValues}
         name={FormID.login}
         onFinish={props.userLogin}
-        onChange={fields => {
-          console.log(`fields`, fields);
-        }}
       >
         <Form.Item
           rules={[{ required: true, message: 'Please input your Username!' }]}
@@ -65,7 +69,9 @@ const UserLogin = props => {
           >
             {props.submiting ? 'Logging in' : 'Log in'}
           </Button>
-          <span>Or <a href="">register now!</a></span>
+          <span>
+            Or <a href="">register now!</a>
+          </span>
         </Form.Item>
       </FormSubmit>
     </CenterPage>

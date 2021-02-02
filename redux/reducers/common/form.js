@@ -3,18 +3,20 @@ import {
   FORM_SUBMIT_STOP,
 } from '../../../constants/ActionTypes';
 
-const initialState = {};
+const initialState = {
+  submiting: {},
+};
 const form = (state = initialState, { type, payload }) => {
   switch (type) {
     case FORM_SUBMIT_START:
       return {
         ...state,
-        [payload]: true,
+        submiting: { ...{ [payload]: true } },
       };
     case FORM_SUBMIT_STOP:
       return {
         ...state,
-        [payload]: false,
+        submiting: { ...{ [payload]: false } },
       };
 
     default:

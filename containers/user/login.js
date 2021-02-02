@@ -6,7 +6,7 @@ import { FormID } from '../../constants/ConstTypes';
 import { stringToBoolean } from '../../core/util';
 
 const mapStateToProps = state => {
-  const submiting = stringToBoolean(`${state.common.form[FormID.login]}`);
+  const submiting = stringToBoolean(`${state.common.form.submiting[FormID.login]}`);
   return { submiting };
 };
 
