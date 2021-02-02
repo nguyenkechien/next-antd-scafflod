@@ -19,6 +19,7 @@ export const propsType = {
 const UserLogin = props => {
   return (
     <CenterPage>
+      <h1>Login Next.js</h1>
       <FormSubmit
         name={FormID.login}
         onFinish={props.userLogin}
@@ -64,7 +65,7 @@ const UserLogin = props => {
           >
             {props.submiting ? 'Logging in' : 'Log in'}
           </Button>
-          Or <a href="">register now!</a>
+          <span>Or <a href="">register now!</a></span>
         </Form.Item>
       </FormSubmit>
     </CenterPage>

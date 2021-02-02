@@ -1,7 +1,7 @@
-import { connect } from 'react-redux';
-import { userLogin } from '../../redux/actions/user';
 import UserLogin from '../../components/User/UserLogin';
+import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { userLogin } from '../../redux/actions/user';
 import { FormID } from '../../constants/ConstTypes';
 import { stringToBoolean } from '../../core/util';
 
