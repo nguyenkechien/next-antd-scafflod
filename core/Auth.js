@@ -4,6 +4,7 @@ import { getCookies, setCookies, deleteCookies, isEmptyObj } from './util';
 import nextFetch from './nextFetch';
 import Endpoint from './../constants/ApiUrlForBE';
 import { fetchUserProfileSuccess } from '../redux/actions/user';
+import Router from 'next/router';
 
 export class Auth {
   static redirectTo = '/login';
@@ -86,3 +87,14 @@ export class Auth {
     return result;
   }
 }
+
+export const redirectToLogin = ctx => {
+  const { req, res, asPath } = ctx;
+  if (res) {
+    res.writeHead(302, { Location: `${Auth.redirectTo}?next=${req.url}` });
+    res.end();
+  } else {
+    const next = asPath ? `?next=${asPath}` : '';
+    Router.push(`${Auth.redirectTo}${next}`);
+  }
+};

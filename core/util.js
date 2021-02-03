@@ -1,5 +1,5 @@
 import Router from 'next/router';
-import { Auth } from './Auth';
+
 // transform the http query & params
 export const filterObject = (o, filter) => {
   const r = {};
@@ -65,17 +65,6 @@ export const maskCardNumber = cardNo => {
   return `*** *** *** *** ${cardNo.substr(-4, 4)}`;
 };
 
-export const redirectToLogin = ctx => {
-  const { req, res, asPath } = ctx;
-  if (res) {
-    res.writeHead(302, { Location: `${Auth.redirectTo}?next=${req.url}` });
-    res.end();
-  } else {
-    const next = asPath ? `?next=${asPath}` : '';
-    Router.push(`${Auth.redirectTo}${next}`);
-  }
-};
-
 export const redirectTo = (ctx, url) => {
   const { res } = ctx;
   if (res) {
@@ -85,4 +74,3 @@ export const redirectTo = (ctx, url) => {
 };
 
 export * from './Cookie';
-export * from './Auth';

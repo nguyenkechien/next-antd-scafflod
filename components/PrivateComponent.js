@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import { redirectToLogin } from '../core/util';
+import { redirectToLogin } from '../core/Auth';
 import { PRIVATE_ADMIN, RoleType, SHARE } from '../constants/ConstTypes';
 
 export const withPrivateComponent = WrappedComponent => {

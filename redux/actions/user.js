@@ -11,7 +11,7 @@ import {
   USER_LOGOUT,
 } from '../../constants/ActionTypes';
 import { RoleType } from '../../constants/ConstTypes';
-import { Auth } from '../../core/util';
+import { Auth } from '../../core/Auth';
 import router from 'next/router';
 
 export const userLogin = payload => ({ type: USER_LOGIN_REQUEST, payload });
