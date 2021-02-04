@@ -3,14 +3,16 @@ import User from '../controllers/User.controller';
 import Systems from '../controllers/Systems.controller';
 import { asyncMiddleware } from './../../middlewares/server';
 import { Reader } from '../services/auth.js';
-import { setCookies } from '../../core/util';
+import { getCookies, setCookies } from '../../core/util';
+import { CookieKey } from '../../constants/ConstTypes';
 
 const Router = express.Router();
 Router.use(async function(req, res, next) {
-  if (!req.headers['x-auth']) {
+  if (!getCookies(CookieKey.xAuth, req)) {
     const user = await Reader();
-    if (user.statusCode > 200) return res.json(user);
-    setCookies();
+    console.log(`user`, user);
+    if (user.statusCode && user.statusCode > 200) return res.json(user);
+    setCookies(CookieKey.xAuth, user.jwt, 30, { req, res });
   }
   next();
 });

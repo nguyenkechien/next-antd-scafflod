@@ -1,25 +1,15 @@
 import { ApiStrapi, ReaderAccount } from '../../constants/ApiStrapi';
-import fetch from 'isomorphic-unfetch';
-import qs from 'query-string';
-import { filterObject } from './../../core/util';
+import { http } from '../../core/http';
 
-export const Reader = async () => {
-  const reader = await fetch(ApiStrapi.auth, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      Accept: 'application/json',
-    },
-    timeout: 10000,
-    body: qs.stringify(filterObject(ReaderAccount, Boolean)),
-  });
+export const AuthenUser = async user => {
   try {
-    const user = await reader.json();
-    console.log(`user`, user);
-    return user;
+    return await http.post(ApiStrapi.auth, { data: user });
   } catch (error) {
-    return '';
+    console.log(`error`, error);
+    return {
+      jwt: '',
+    };
   }
 };
 
-export const AuthenUser = user => user;
+export const Reader = async () => await AuthenUser(ReaderAccount);

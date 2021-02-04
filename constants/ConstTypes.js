@@ -46,6 +46,7 @@ export const SystemsData = {
 
 export const CookieKey = {
   AuthToken: 'auth-token',
+  xAuth: 'x-auth',
 };
 
 export const errorStatus = {

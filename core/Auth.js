@@ -1,7 +1,7 @@
 import { CookieKey } from '../constants/ConstTypes';
 import logger from './Logger';
 import { getCookies, setCookies, deleteCookies, isEmptyObj } from './util';
-import nextFetch from './nextFetch';
+import { nextFetch } from './nextFetch';
 import Endpoint from './../constants/ApiUrlForBE';
 import { fetchUserProfileSuccess } from '../redux/actions/user';
 import Router from 'next/router';

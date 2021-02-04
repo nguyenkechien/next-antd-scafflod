@@ -13,7 +13,7 @@ import {
   fetchUserProfileSuccess,
 } from '../../actions/user';
 import Endpoint from '../../../constants/ApiUrlForBE';
-import nextFetch from '../../../core/nextFetch';
+import { nextFetch } from '../../../core/nextFetch';
 import logger from '../../../core/Logger';
 /**
  * userList saga

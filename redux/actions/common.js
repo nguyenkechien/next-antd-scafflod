@@ -9,7 +9,7 @@ import {
   FORM_SUBMIT_STOP,
 } from '../../constants/ActionTypes';
 import api from './../../constants/ApiUrlForBE';
-import nextFetch from './../../core/nextFetch';
+import { nextFetch } from './../../core/nextFetch';
 import logger from './../../core/Logger';
 
 export const fetchSystemData = async ({ dispatch }) => {
