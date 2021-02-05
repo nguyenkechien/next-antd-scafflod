@@ -53,10 +53,11 @@ Object.keys(http).forEach(function(method) {
   _nextFetch[method] = (
     path,
     { data, query, timeout = 10000, headers = {} } = {},
+    req,
   ) => {
     const _headers = {
       Authorization: 'Bearer ' + Auth.getAuthToken(),
-      [CookieKey.xAuth]: getCookies(CookieKey.xAuth),
+      [CookieKey.xAuth]: getCookies(CookieKey.xAuth, req),
       ...headers,
     };
 

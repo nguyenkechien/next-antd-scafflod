@@ -15,12 +15,16 @@ import { closeCollapse, fetchSystemData } from '../redux/actions/common';
 import { Auth } from '../core/Auth';
 import { PUBLIC, SHARE } from '../constants/ConstTypes';
 import ErrorPage from '../components/Error/ErrorPage';
+import { getTokenReader } from '../server/services/auth';
 
 class NextApp extends App {
   static async getInitialProps({ Component, ctx, router }) {
     let pageProps = {};
     const { pathname, store, isServer } = ctx;
-    if (isServer) await fetchSystemData(store);
+    if (isServer) {
+      await getTokenReader(ctx);
+      await fetchSystemData(store, ctx.req);
+    }
     const auth = await Auth.authOnServer(ctx);
 
     const route = pathname;

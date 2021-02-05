@@ -12,10 +12,10 @@ import api from './../../constants/ApiUrlForBE';
 import { nextFetch } from './../../core/nextFetch';
 import logger from './../../core/Logger';
 
-export const fetchSystemData = async ({ dispatch }) => {
+export const fetchSystemData = async ({ dispatch }, req) => {
   dispatch({ type: FETCH_SYSTEM_REQUEST });
   try {
-    const res = await nextFetch.get(api.System.getAll);
+    const res = await nextFetch.get(api.System.getAll, {}, req);
     dispatch(fetchSystemDataSuccess(res.result));
   } catch (e) {
     logger.error(e);
