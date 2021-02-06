@@ -10,37 +10,42 @@ export const nextFetchMethodsType = {
    *
    * @param {String} path
    * @param {ConfigType} config
+   * @param {Request ?} req
    * @returns {Promise<resType>}
    */
-  get: async (path, config) => await Promise.resolve(resType),
+  get: async (path, config, req) => await Promise.resolve(resType),
   /**
    *
    * @param {String} path
    * @param {ConfigType} config
+   * @param {Request ?} req
    * @returns {Promise<resType>}
    */
-  post: async (path, config) => await Promise.resolve(resType),
+  post: async (path, config, req) => await Promise.resolve(resType),
   /**
    *
    * @param {String} path
    * @param {ConfigType} config
+   * @param {Request ?} req
    * @returns {Promise<resType>}
    */
-  put: async (path, config) => await Promise.resolve(resType),
+  put: async (path, config, req) => await Promise.resolve(resType),
   /**
    *
    * @param {String} path
    * @param {ConfigType} config
+   * @param {Request ?} req
    * @returns {Promise<resType>}
    */
-  patch: async (path, config) => await Promise.resolve(resType),
+  patch: async (path, config, req) => await Promise.resolve(resType),
   /**
    *
    * @param {String} path
    * @param {ConfigType} config
+   * @param {Request ?} req
    * @returns {Promise<resType>}
    */
-  delete: async (path, config) => await Promise.resolve(resType),
+  delete: async (path, config, req) => await Promise.resolve(resType),
 };
 
 // initial fetch

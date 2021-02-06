@@ -22,8 +22,8 @@ class NextApp extends App {
     let pageProps = {};
     const { pathname, store, isServer } = ctx;
     if (isServer) {
-      await getTokenReader(ctx);
-      await fetchSystemData(store, ctx.req);
+      const token = await getTokenReader(ctx);
+      await fetchSystemData(store, token);
     }
     const auth = await Auth.authOnServer(ctx);
 

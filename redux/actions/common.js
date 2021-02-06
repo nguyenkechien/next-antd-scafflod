@@ -11,11 +11,19 @@ import {
 import api from './../../constants/ApiUrlForBE';
 import { nextFetch } from './../../core/nextFetch';
 import logger from './../../core/Logger';
+import { CookieKey } from '../../constants/ConstTypes';
 
-export const fetchSystemData = async ({ dispatch }, req) => {
+/**
+ *
+ * @param {{getState: Function, dispatch: VoidFunction}} param0
+ * @param {String} readerToken
+ */
+export const fetchSystemData = async ({ dispatch }, readerToken) => {
   dispatch({ type: FETCH_SYSTEM_REQUEST });
   try {
-    const res = await nextFetch.get(api.System.getAll, {}, req);
+    const res = await nextFetch.get(api.System.getAll, {
+      headers: { [CookieKey.xAuth]: readerToken },
+    });
     dispatch(fetchSystemDataSuccess(res.result));
   } catch (e) {
     logger.error(e);

@@ -28,5 +28,7 @@ export const getTokenReader = async ctx => {
   if (!getCookies(CookieKey.xAuth, ctx.req)) {
     const reader = await AuthenUser(ReaderAccount);
     setCookies(CookieKey.xAuth, reader.jwt, 30, ctx);
+    return reader.jwt;
   }
+  return getCookies(CookieKey.xAuth, ctx.req);
 };

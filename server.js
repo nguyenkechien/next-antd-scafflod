@@ -17,6 +17,7 @@ app.prepare().then(() => {
   server.get('/favicon.ico', (req, res) =>
     res.sendFile(path.join(__dirname, 'static', 'favicon.ico')),
   );
+
   server.get('*', (req, res) => handle(req, res));
 
   server.startServer(PORT, isDev);
