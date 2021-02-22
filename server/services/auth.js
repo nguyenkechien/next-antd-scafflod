@@ -24,10 +24,11 @@ export const AuthenUser = async user => {
 };
 
 export const getTokenReader = async ctx => {
-  if (!getCookies(CookieKey.xAuth, ctx.req)) {
+  const xAuth = getCookies(CookieKey.xAuth, ctx.req);
+  if (!xAuth) {
     const reader = await AuthenUser(ReaderAccount);
     setCookies(CookieKey.xAuth, reader.jwt, 30, ctx);
     return reader.jwt;
   }
-  return getCookies(CookieKey.xAuth, ctx.req);
+  return xAuth;
 };

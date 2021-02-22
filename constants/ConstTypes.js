@@ -29,11 +29,6 @@ export const RouterType = {
 };
 
 export const SystemsData = {
-  meta: {
-    title: 'Next-Antd-Scaffold-Server',
-    keyword: 'Next-Antd-Scaffold',
-    description: 'Next-Antd-Scaffold',
-  },
   header: {
     logo: {
       src: `${StaticFolder}/logo.png`,

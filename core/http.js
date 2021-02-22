@@ -91,8 +91,7 @@ HTTP_METHOD.forEach(method => {
 
     console.info('Request Url:', url);
 
-    const res = await fetch(url, opts);
-    return await res.json();
+    return await (await fetch(url, opts)).json();
   };
 });
 

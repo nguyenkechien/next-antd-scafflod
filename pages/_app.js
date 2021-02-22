@@ -15,15 +15,13 @@ import { closeCollapse, fetchSystemData } from '../redux/actions/common';
 import { Auth } from '../core/Auth';
 import { PUBLIC, SHARE } from '../constants/ConstTypes';
 import ErrorPage from '../components/Error/ErrorPage';
-import { getTokenReader } from '../server/services/auth';
 
 class NextApp extends App {
   static async getInitialProps({ Component, ctx, router }) {
     let pageProps = {};
     const { pathname, store, isServer } = ctx;
     if (isServer) {
-      const token = await getTokenReader(ctx);
-      await fetchSystemData(store, token);
+      await fetchSystemData(store, ctx);
     }
     const auth = await Auth.authOnServer(ctx);
 
@@ -94,15 +92,14 @@ class NextApp extends App {
 
   render() {
     const { Component, pageProps, store, router } = this.props;
-    logger.log(`store`, store.getState());
+    logger.log(`store state`, store.getState());
     logger.log(`pageProps`, pageProps);
-    const meta = store.getState().common.system.meta;
     return (
       <>
         <Head>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <meta charSet="utf-8" />
-          <title>{meta.title || 'Next-Antd-Scaffold'}</title>
+          <title>Next-Antd-Scaffold</title>
           <link
             rel="shortcut icon"
             href="/static/favicon.ico"

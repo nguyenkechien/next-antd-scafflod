@@ -1,11 +1,10 @@
 const path = require('path');
 const server = require('./server/index').default;
-
+const { getTokenReader } = require('./server/services/auth');
 const next = require('next');
 const { publicRuntimeConfig, serverRuntimeConfig } = require('./next.config');
 const { isDev } = publicRuntimeConfig;
 const { PORT } = serverRuntimeConfig;
-
 const app = next({ dev: isDev });
 const handle = app.getRequestHandler();
 
@@ -18,7 +17,10 @@ app.prepare().then(() => {
     res.sendFile(path.join(__dirname, 'static', 'favicon.ico')),
   );
 
-  server.get('*', (req, res) => handle(req, res));
+  server.get('*', async (req, res) => {
+    await getTokenReader({ req, res });
+    return handle(req, res);
+  });
 
   server.startServer(PORT, isDev);
 });

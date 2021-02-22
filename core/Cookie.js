@@ -18,6 +18,7 @@ export const setCookies = (key, value, duration, ctx) => {
       d.setTime(d.getTime() + 24 * 60 * 60 * 1000 * duration);
       const serializedCookie = cookie.serialize(key, value, {
         expire: d.toGMTString(),
+        httpOnly: true,
       });
       cookies.push(serializedCookie);
     }

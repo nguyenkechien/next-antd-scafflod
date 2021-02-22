@@ -11,7 +11,7 @@ const resType = {
 
 const resJson = ({
   status = 200,
-  message = 'success',
+  message = 'Success',
   errors = null,
   result = null,
 }) => ({ code: status, message, errors, result });

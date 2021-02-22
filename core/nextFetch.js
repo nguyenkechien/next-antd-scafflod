@@ -3,6 +3,7 @@ import { CookieKey } from '../constants/ConstTypes';
 import { Auth } from './Auth';
 import { getCookies } from './Cookie';
 import { http, ConfigType } from './http';
+import logger from './Logger';
 import { resType } from './utilServer';
 
 export const nextFetchMethodsType = {
@@ -66,7 +67,8 @@ Object.keys(http).forEach(function(method) {
       ...headers,
     };
 
-    return new Promise(async (resolve, reject) => {
+    console.log(_headers);
+    return new Promise((resolve, reject) => {
       http[method](path, {
         data,
         query,
@@ -80,6 +82,7 @@ Object.keys(http).forEach(function(method) {
             reject({ code, errors });
           }
         }
+        logger.log(`NextFetch Success`);
         resolve(res);
       });
     });
