@@ -46,6 +46,7 @@ export const fetchUserProfileSuccess = payload => {
   const role = RoleType[payload.position];
   const customPayload = {
     username: payload.username,
+    email: payload.email,
     isAuthenticated: true,
     role,
   };

@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import { ApiStrapi, ReaderAccount } from '../../constants/ApiStrapi';
 import { CookieKey } from '../../constants/ConstTypes';
 import { http } from '../../core/http';
@@ -11,7 +10,7 @@ import { getCookies, setCookies } from '../../core/util';
  */
 export const AuthenUser = async user => {
   try {
-    const userRes = await http.post(ApiStrapi.auth, { data: user });
+    const userRes = await http.post(ApiStrapi.auth.login, { data: user });
     return userRes.statusCode && userRes.statusCode >= 400
       ? { jwt: '', user: {} }
       : userRes;

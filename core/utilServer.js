@@ -16,7 +16,12 @@ const resJson = ({
   result = null,
 }) => ({ code: status, message, errors, result });
 
-const getTokenHeader = (req = { headers: {} }, key = 'authorization') => {
+/**
+ *
+ * @param {Request} req
+ * @param {String} key
+ */
+const getTokenHeader = (req, key = 'authorization') => {
   /**
    * @type {string}
    */

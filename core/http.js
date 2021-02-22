@@ -79,7 +79,7 @@ HTTP_METHOD.forEach(method => {
       mode: 'cors',
       cache: 'no-cache',
     };
-    console.log(`headers`, opts.headers);
+    console.log('path', path, `\nheaders`, opts.headers);
     if (query) {
       const queryString = qs.stringify(filterObject(query, Boolean));
       url += `${url.includes('?') ? '&' : '?'}${queryString}`;
