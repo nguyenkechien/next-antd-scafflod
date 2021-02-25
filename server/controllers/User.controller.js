@@ -1,7 +1,7 @@
 import { ApiStrapi } from '../../constants/ApiStrapi';
 import { getAPIByToken } from '../services';
 import { AuthenUser } from '../services/auth';
-const { resJson, getTokenHeader } = require('../../core/utilServer');
+import { resJson, getTokenHeader } from '../../core/utilServer';
 
 const User = {
   async GetUsers(req, res) {

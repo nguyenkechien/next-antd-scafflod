@@ -1,4 +1,4 @@
-const resType = {
+export const resType = {
   status: Number,
   message: Number,
   errors: null,
@@ -8,8 +8,7 @@ const resType = {
  *
  * @param {resType} param0
  */
-
-const resJson = ({
+export const resJson = ({
   status = 200,
   message = 'Success',
   errors = null,
@@ -21,12 +20,10 @@ const resJson = ({
  * @param {Request} req
  * @param {String} key
  */
-const getTokenHeader = (req, key = 'authorization') => {
+export const getTokenHeader = (req, key = 'authorization') => {
   /**
    * @type {string}
    */
   const token = req.headers[key] || 'Bearer ';
   return token ? token.split('Bearer ').join('') : '';
 };
-
-module.exports = { resJson, resType, getTokenHeader };

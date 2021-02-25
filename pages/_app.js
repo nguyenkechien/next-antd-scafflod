@@ -20,11 +20,10 @@ class NextApp extends App {
   static async getInitialProps({ Component, ctx, router }) {
     let pageProps = {};
     const { pathname, store, isServer } = ctx;
-    if (isServer) {
-      await fetchSystemData(store, ctx);
-    }
-    const auth = await Auth.authOnServer(ctx);
 
+    if (isServer) await fetchSystemData(store, ctx);
+
+    const auth = await Auth.authOnServer(ctx);
     const route = pathname;
     logger.log('\nroute: ', route, ',\n', router);
 
