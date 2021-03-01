@@ -24,11 +24,11 @@ export const AuthenUser = async user => {
 };
 
 export const getTokenReader = async ctx => {
-  const xAuth = getCookies(CookieKey.xAuth, ctx.req);
-  if (!xAuth) {
+  const jwtToken = getCookies(CookieKey.jwtToken, ctx.req);
+  if (!jwtToken) {
     const reader = await AuthenUser(ReaderAccount);
-    setCookies(CookieKey.xAuth, reader.jwt, 30, ctx);
+    setCookies(CookieKey.jwtToken, reader.jwt, 30, ctx);
     return reader.jwt;
   }
-  return xAuth;
+  return jwtToken;
 };

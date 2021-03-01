@@ -1,10 +1,10 @@
 import express from 'express';
 import User from '../controllers/User.controller';
 import Systems from '../controllers/Systems.controller';
-import { asyncMiddleware, xAuthMiddleware } from './../../middlewares/server';
+import { asyncMiddleware, jwtTokenMiddleware } from './../../middlewares/server';
 
 const Router = express.Router();
-Router.use(xAuthMiddleware);
+Router.use(jwtTokenMiddleware);
 Router.prefix('/users', router => {
   router.route('/').get(asyncMiddleware(User.GetUsers));
   router.route('/profile').get(asyncMiddleware(User.GetProfile));

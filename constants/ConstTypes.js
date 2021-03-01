@@ -41,7 +41,7 @@ export const SystemsData = {
 
 export const CookieKey = {
   AuthToken: 'auth-token',
-  xAuth: 'x-auth',
+  jwtToken: 'jwt-token',
 };
 
 export const errorStatus = {

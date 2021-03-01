@@ -71,6 +71,7 @@ export class Auth {
           const res = await nextFetch.get(
             Endpoint.User.getUserProfile,
             setting,
+            req,
           );
           const profileRes = fetchUserProfileSuccess(res.result);
           store.dispatch(profileRes);

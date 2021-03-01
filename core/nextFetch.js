@@ -63,7 +63,6 @@ Object.keys(http).forEach(function(method) {
   ) => {
     const _headers = {
       Authorization: 'Bearer ' + Auth.getAuthToken(),
-      [CookieKey.xAuth]: getCookies(CookieKey.xAuth, req),
       ...headers,
     };
 

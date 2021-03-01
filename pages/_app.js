@@ -1,15 +1,15 @@
 import App, { Container } from 'next/app';
+import Router from 'next/router';
 import Head from 'next/head';
 import { Provider } from 'react-redux';
 import withRedux from 'next-redux-wrapper';
 import withReduxSaga from 'next-redux-saga';
+import { createGlobalStyle } from 'styled-components';
+import NProgress from 'nprogress';
 import createStore from '../redux/store';
 import Layout from '../layout';
 import '../assets/self-styles.less';
-import NProgress from 'nprogress';
-import { createGlobalStyle } from 'styled-components';
 import { color_nprogress } from '../constants/CustomTheme';
-import Router from 'next/router';
 import logger from '../core/Logger';
 import { closeCollapse, fetchSystemData } from '../redux/actions/common';
 import { Auth } from '../core/Auth';
@@ -24,11 +24,10 @@ class NextApp extends App {
     if (isServer) await fetchSystemData(store, ctx);
 
     const auth = await Auth.authOnServer(ctx);
-    const route = pathname;
-    logger.log('\nroute: ', route, ',\n', router);
+    logger.log('\nroute: ', pathname, ',\n', router);
 
     const state = store.getState();
-    const { type, title } = state.common.system.header.menu[route] || {};
+    const { type, title } = state.common.system.header.menu[pathname] || {};
     const routerType = type || SHARE;
     pageProps = Object.assign(pageProps, { title });
 
@@ -108,12 +107,12 @@ class NextApp extends App {
         <Container>
           <Provider store={store}>
             <Layout title={pageProps.title} {...pageProps} {...router}>
+              <GlobalStyle />
               {pageProps.statusCode ? (
                 <ErrorPage statusCode={pageProps.statusCode} />
               ) : (
                 <Component {...pageProps} router={router} />
               )}
-              <GlobalStyle />
             </Layout>
           </Provider>
         </Container>

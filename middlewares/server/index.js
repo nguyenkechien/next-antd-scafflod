@@ -9,9 +9,9 @@ export const asyncMiddleware = fn => (req, res, next) => {
   });
 };
 
-export const xAuthMiddleware = (req, res, next) => {
-  if (!req.headers[CookieKey.xAuth] || !req.headers[CookieKey.xAuth].length) {
+export const jwtTokenMiddleware = (req, res, next) => {
+  if (!req.headers[CookieKey.jwtToken] || !req.headers[CookieKey.jwtToken].length) {
     return res.json(resJson({ status: 403, message: errorStatus[403] }));
   }
-  next();
+  return next();
 };
